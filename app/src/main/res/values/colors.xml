@@ -14,7 +14,19 @@
     <color name="darkGray">#4B4B4B</color>
     <color name="dark">#313C44</color>
     <color name="darker">#151B20</color>
-    <color name="red">#FF4646</color>
     <color name="yellow">#FFC114</color>
     <color name="green">#00C980</color>
+    <color name="blue">#0091EA</color>
+    <color name="darkblue">#01579B</color>
+    <color name="red">#D50000</color>
+    <color name="darkred">#B71C1C</color>
+    <color name="purple">#6200EA</color>
+    <color name="darkPurple">#5502C8</color>
+    <color name="greenTab">#02AF92</color>
+
+    <!-- Custom Chip Style -->
+    <color name="checkedChipBackgroundColor">#4DB71C1C</color>
+    <color name="chipBackgroundColor">#33004D40</color>
+    <color name="checkedChipTextColor">@color/red</color>
+    <color name="chipTextColor">@color/darkGray</color>
 </resources>
