@@ -1,4 +1,4 @@
-package br.com.raveline.newfoods.presentation.ui.fragment
+package br.com.raveline.newfoods.presentation.ui.fragment.jokes
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import br.com.raveline.newfoods.R
 
-class RecipesFragment : Fragment() {
+class JokeFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -15,8 +15,7 @@ class RecipesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipes, container, false)
+        return inflater.inflate(R.layout.fragment_joke, container, false)
     }
-
 
 }

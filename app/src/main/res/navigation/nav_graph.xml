@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/recipesFragment_id"
-        android:name="br.com.raveline.newfoods.presentation.ui.fragment.RecipesFragment"
+        android:name="br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesFragment"
         android:label="fragment_recipes"
         tools:layout="@layout/fragment_recipes" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment_id"
-        android:name="br.com.raveline.newfoods.presentation.ui.fragment.FavoritesFragment"
+        android:name="br.com.raveline.newfoods.presentation.ui.fragment.favorites.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/jokeFragment_id"
-        android:name="br.com.raveline.newfoods.presentation.ui.fragment.JokeFragment"
+        android:name="br.com.raveline.newfoods.presentation.ui.fragment.jokes.JokeFragment"
         android:label="fragment_joke"
         tools:layout="@layout/fragment_joke" >
         <action

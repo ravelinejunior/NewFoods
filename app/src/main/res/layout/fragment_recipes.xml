@@ -5,15 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="br.com.raveline.newfoods.presentation.ui.fragment.RecipesFragment">
+    tools:context="br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesFragment">
 
     <com.todkars.shimmer.ShimmerRecyclerView
         android:id="@+id/shimmer_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:shimmer_recycler_item_count="4"
+        android:visibility="visible"
+        app:shimmer_recycler_layout="@layout/item_shimmer_layout"
         android:layout_marginHorizontal="8dp"
         android:layout_marginVertical="8dp"
         android:orientation="vertical"
+        tools:listitem="@layout/item_shimmer_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +31,8 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@android:drawable/ic_menu_add"
+        app:backgroundTint="@color/dark_orange"
+        android:src="@drawable/ic_baseline_restaurant_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white"
@@ -38,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
+        android:visibility="gone"
         android:src="@drawable/no_internet_connection"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

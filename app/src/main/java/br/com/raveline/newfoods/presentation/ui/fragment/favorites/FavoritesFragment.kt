@@ -1,4 +1,4 @@
-package br.com.raveline.newfoods.presentation.ui.fragment
+package br.com.raveline.newfoods.presentation.ui.fragment.favorites
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import br.com.raveline.newfoods.R
 
-class JokeFragment : Fragment() {
+class FavoritesFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -15,7 +15,7 @@ class JokeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_joke, container, false)
+        return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
 }

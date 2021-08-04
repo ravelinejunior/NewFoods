@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGray"
-    tools:context="br.com.raveline.newfoods.presentation.ui.fragment.FavoritesFragment">
+    tools:context="br.com.raveline.newfoods.presentation.ui.fragment.favorites.FavoritesFragment">
 
     <TextView
         android:layout_width="match_parent"

@@ -1,13 +1,13 @@
-package br.com.raveline.newfoods
+package br.com.raveline.newfoods.presentation.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

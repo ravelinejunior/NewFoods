@@ -29,4 +29,5 @@
     <color name="chipBackgroundColor">#33004D40</color>
     <color name="checkedChipTextColor">@color/red</color>
     <color name="chipTextColor">@color/darkGray</color>
+    <color name="dark_orange">#F83F05</color>
 </resources>
