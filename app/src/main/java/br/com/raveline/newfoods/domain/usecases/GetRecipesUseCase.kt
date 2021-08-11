@@ -1,4 +1,11 @@
 package br.com.raveline.newfoods.domain.usecases
 
-class GetRecipesUseCase {
+import br.com.raveline.newfoods.data.model.Recipes
+import br.com.raveline.newfoods.domain.factory.FoodRepository
+import retrofit2.Response
+
+class GetRecipesUseCase(private val foodRepository: FoodRepository) {
+    suspend fun execute(queries: Map<String, String>): Response<Recipes> {
+        return foodRepository.getFoodRecipes(queries)
+    }
 }
