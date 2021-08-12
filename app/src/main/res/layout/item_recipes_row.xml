@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="recipe"
+            type="br.com.raveline.newfoods.data.model.Recipe" />
+
+    </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_recipesRow_layout"
