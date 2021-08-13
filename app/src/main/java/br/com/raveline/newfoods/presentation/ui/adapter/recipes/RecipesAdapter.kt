@@ -1,12 +1,15 @@
 package br.com.raveline.newfoods.presentation.ui.adapter.recipes
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import br.com.raveline.newfoods.data.model.Recipe
+import br.com.raveline.newfoods.data.model.Recipes
 import br.com.raveline.newfoods.databinding.ItemRecipesRowBinding
+import br.com.raveline.newfoods.utils.RecipesDiffUtil
 
 class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
 
@@ -19,17 +22,22 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
             return oldItem == newItem
         }
 
+
     }
 
     val differ = AsyncListDiffer(this, callback)
 
+    private var recipesList = emptyList<Recipe>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = ItemRecipesRowBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding =
+            ItemRecipesRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val recipe = differ.currentList[position]
+        holder.bind(recipe)
     }
 
     override fun getItemCount(): Int = differ.currentList.size
@@ -37,12 +45,20 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
     class MyViewHolder(private val binding: ItemRecipesRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-            fun bind(recipe: Recipe){
-                binding.executePendingBindings()
-            }
+        fun bind(recipe: Recipe) {
+            binding.recipe = recipe
+            binding.executePendingBindings()
+           // Log.i("Adapter", recipe.toString())
+        }
 
     }
 
+    fun setRecipeData(newData: Recipes) {
+        val recipesDiffUtil = RecipesDiffUtil(recipesList, newData.recipes!!)
+        val diffUtilResult = DiffUtil.calculateDiff(recipesDiffUtil)
+        recipesList = newData.recipes
+        diffUtilResult.dispatchUpdatesTo(this)
+    }
 
 
 }

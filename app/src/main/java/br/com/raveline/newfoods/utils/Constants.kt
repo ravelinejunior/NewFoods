@@ -1,9 +1,14 @@
 package br.com.raveline.newfoods.utils
 
+import android.view.View
+import com.google.android.material.snackbar.Snackbar
+
 class Constants {
-    companion object{
+    companion object {
         const val BASE_URL = "https://api.spoonacular.com/"
         const val API_KEY = "5b40082bdb33448fb8aedd940dad43fd"
+        //chave de api
+        const val API_KEYA = "45334d825076402ba6ff877e8ef65cd6"
 
         //Api query keys
         const val QUERY_SEARCH = "query"
@@ -28,5 +33,9 @@ class Constants {
         const val PREFERENCES_DIET_TYPE = "dietType"
         const val PREFERENCES_DIET_TYPE_ID = "dietTypeId"
         const val PREFERENCES_BACK_ONLINE = "backOnline"
+
+        fun showErrorSnackBar(view: View, message: String) {
+            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
+        }
     }
 }

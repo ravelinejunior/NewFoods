@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="recipe"
             type="br.com.raveline.newfoods.data.model.Recipe" />
@@ -37,14 +38,15 @@
 
                 <ImageView
                     android:id="@+id/image_recipesRow_id"
+                    setImageRecipe="@{recipe.image}"
                     android:layout_width="200dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars"
-                    android:contentDescription="@string/app_name" />
+                    tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
                     android:id="@+id/title_recipesRow_id"
@@ -57,6 +59,7 @@
                     android:fontFamily="@font/courgette"
                     android:maxLines="3"
                     android:padding="4dp"
+                    android:text="@{recipe.title}"
                     android:textColor="@color/darker"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -73,6 +76,7 @@
                     android:layout_marginTop="8dp"
                     android:ellipsize="end"
                     android:maxLines="5"
+                    android:text="@{recipe.summary}"
                     android:textColor="@color/darkGray"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -84,16 +88,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
+                    android:contentDescription="@string/app_name"
                     app:layout_constraintBottom_toBottomOf="@+id/image_recipesRow_id"
                     app:layout_constraintStart_toStartOf="@+id/description_recipesRow_id"
                     app:layout_constraintTop_toBottomOf="@+id/description_recipesRow_id"
                     app:layout_constraintVertical_bias="0.19999999"
                     app:srcCompat="@drawable/ic_sharp_heart_24"
-                    app:tint="@color/red"
-                    android:contentDescription="@string/app_name" />
+                    app:tint="@color/red" />
 
                 <TextView
                     android:id="@+id/qtdLike_itemRecipes_id"
+                    setNumberOfLikes="@{recipe.aggregateLikes}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
@@ -110,16 +115,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
+                    android:contentDescription="@string/app_name"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_heart_item_recipes"
                     app:layout_constraintStart_toEndOf="@+id/qtdLike_itemRecipes_id"
                     app:layout_constraintTop_toTopOf="@+id/iv_heart_item_recipes"
                     app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/ic_baseline_access_time_filled_24"
-                    app:tint="@color/yellow"
-                    android:contentDescription="@string/app_name" />
+                    app:tint="@color/yellow" />
 
                 <TextView
                     android:id="@+id/qtdTime_itemRecipes_id"
+                    setNumberOfMinutes="@{recipe.readyInMinutes}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
@@ -131,22 +137,24 @@
 
                 <ImageView
                     android:id="@+id/iv_fit_item_recipes"
+                    setTextAndColorForVegetarian="@{recipe.vegan}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
+                    android:contentDescription="@string/app_name"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_time_item_recipes"
                     app:layout_constraintStart_toEndOf="@+id/qtdTime_itemRecipes_id"
                     app:layout_constraintTop_toTopOf="@+id/iv_time_item_recipes"
                     app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/ic_baseline_eco_24"
-                    app:tint="@color/darkGray"
-                    android:contentDescription="@string/app_name" />
+                    app:tint="@color/darkGray" />
 
                 <TextView
                     android:id="@+id/qtdHealth_itemRecipes_id"
+                    setTextAndColorForVegetarian="@{recipe.vegan}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/vegan"
+                    android:text="@string/vegana"
                     android:textAlignment="center"
                     android:textColor="@color/darkGray"
                     android:textStyle="bold"
