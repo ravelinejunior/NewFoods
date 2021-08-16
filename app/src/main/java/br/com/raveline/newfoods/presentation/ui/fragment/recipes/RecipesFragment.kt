@@ -12,17 +12,7 @@ import br.com.raveline.newfoods.databinding.FragmentRecipesBinding
 import br.com.raveline.newfoods.presentation.ui.adapter.recipes.RecipesAdapter
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModel
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModelFactory
-import br.com.raveline.newfoods.utils.Constants.Companion.API_KEY
-import br.com.raveline.newfoods.utils.Constants.Companion.API_KEYA
-import br.com.raveline.newfoods.utils.Constants.Companion.DEFAULT_DIET_TYPE
-import br.com.raveline.newfoods.utils.Constants.Companion.DEFAULT_MEAL_TYPE
-import br.com.raveline.newfoods.utils.Constants.Companion.DEFAULT_RECIPES_NUMBER
-import br.com.raveline.newfoods.utils.Constants.Companion.QUERY_ADD_RECIPE_INFORMATION
-import br.com.raveline.newfoods.utils.Constants.Companion.QUERY_API_KEY
-import br.com.raveline.newfoods.utils.Constants.Companion.QUERY_DIET
-import br.com.raveline.newfoods.utils.Constants.Companion.QUERY_FILL_INGREDIENTS
-import br.com.raveline.newfoods.utils.Constants.Companion.QUERY_NUMBER
-import br.com.raveline.newfoods.utils.Constants.Companion.QUERY_TYPE
+import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModel
 import br.com.raveline.newfoods.utils.Constants.Companion.showErrorSnackBar
 import br.com.raveline.newfoods.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +23,7 @@ class RecipesFragment : Fragment() {
 
     private lateinit var recipesBinding: FragmentRecipesBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var recipesViewModel: RecipesViewModel
 
     @Inject
     lateinit var factory: MainViewModelFactory
@@ -43,6 +34,7 @@ class RecipesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+        recipesViewModel = ViewModelProvider(this).get(RecipesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -62,7 +54,7 @@ class RecipesFragment : Fragment() {
 
 
     private fun requestApiData() {
-        mainViewModel.getRecipes(applyQueries())
+        mainViewModel.getRecipes(recipesViewModel.applyQueries())
 
         mainViewModel.recipesLiveData.observe(viewLifecycleOwner, { response ->
             when (response) {
@@ -70,7 +62,7 @@ class RecipesFragment : Fragment() {
                     hideShimmer()
                     response.data.let { recipe ->
                         recipesAdapter.differ.submitList(recipe?.recipes)
-                      //  recipesAdapter.setRecipeData(recipe!!)
+                        //  recipesAdapter.setRecipeData(recipe!!)
                     }
                 }
 
@@ -96,19 +88,6 @@ class RecipesFragment : Fragment() {
 
     }
 
-    private fun applyQueries(): HashMap<String, String> {
-        val queries: HashMap<String, String> = HashMap()
-
-        queries[QUERY_NUMBER] = DEFAULT_RECIPES_NUMBER
-        queries[QUERY_API_KEY] = API_KEYA
-        queries[QUERY_TYPE] = DEFAULT_MEAL_TYPE
-        queries[QUERY_DIET] = DEFAULT_DIET_TYPE
-        queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
-        queries[QUERY_FILL_INGREDIENTS] = "true"
-
-        return queries
-
-    }
 
     private fun hideShimmer() {
         recipesBinding.shimmerRecyclerView.hideShimmer()
