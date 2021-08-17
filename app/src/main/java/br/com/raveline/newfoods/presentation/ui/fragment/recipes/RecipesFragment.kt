@@ -17,6 +17,7 @@ import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModel
 import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModelFactory
 import br.com.raveline.newfoods.utils.Constants.Companion.showErrorSnackBar
 import br.com.raveline.newfoods.utils.Resource
+import br.com.raveline.newfoods.utils.observeOnce
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -72,7 +73,7 @@ class RecipesFragment : Fragment() {
         //VERIFICA SE EXISTE DADOS NO BANCO PRIMEIRO ANTES DE ENVIAR A REQUISIÇÃO
 
         lifecycleScope.launch {
-            mainViewModel.recipesLocalLiveData.observe(viewLifecycleOwner, { recipesDatabase ->
+            mainViewModel.recipesLocalLiveData.observeOnce(viewLifecycleOwner, { recipesDatabase ->
                 if (recipesDatabase.isNotEmpty()) {
                     recipesAdapter.setRecipeData(recipesDatabase[0].recipes)
                     Log.i("TAGFRAGMENT", "getData: from database")
