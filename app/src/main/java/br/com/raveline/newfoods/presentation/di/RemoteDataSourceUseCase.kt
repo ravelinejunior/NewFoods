@@ -1,8 +1,8 @@
 package br.com.raveline.newfoods.presentation.di
 
 import br.com.raveline.newfoods.data.api.FoodRecipesServices
-import br.com.raveline.newfoods.data.repository.datasource.FoodRecipesDataSource
-import br.com.raveline.newfoods.data.repository.datasource_impl.FoodRecipesDataSourceImpl
+import br.com.raveline.newfoods.data.repository.datasource.FoodRemoteRecipesDataSource
+import br.com.raveline.newfoods.data.repository.datasource_impl.FoodRemoteRecipesDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ class RemoteDataSourceUseCase {
 
     @Provides
     @Singleton
-    fun provideFoodRecipesDataSource(api: FoodRecipesServices): FoodRecipesDataSource {
-        return FoodRecipesDataSourceImpl(api)
+    fun provideFoodRecipesDataSource(api: FoodRecipesServices): FoodRemoteRecipesDataSource {
+        return FoodRemoteRecipesDataSourceImpl(api)
     }
 }

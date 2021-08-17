@@ -3,6 +3,6 @@ package br.com.raveline.newfoods.data.repository.datasource
 import br.com.raveline.newfoods.data.model.Recipes
 import retrofit2.Response
 
-interface FoodRecipesDataSource {
+interface FoodRemoteRecipesDataSource {
     suspend fun getFoodRecipes(queries: Map<String, String>): Response<Recipes>
 }
