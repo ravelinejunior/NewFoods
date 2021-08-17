@@ -2,6 +2,7 @@ package br.com.raveline.newfoods.presentation.di
 
 import br.com.raveline.newfoods.data.repository.FoodRemoteRepositoryDataSourceImpl
 import br.com.raveline.newfoods.data.repository.datasource.FoodRemoteRecipesDataSource
+import br.com.raveline.newfoods.data.repository.datasource.RecipesLocalDataSource
 import br.com.raveline.newfoods.domain.factory.FoodRepository
 import dagger.Module
 import dagger.Provides
@@ -16,8 +17,12 @@ class RepositoryDataSourceModule {
     @Provides
     @Singleton
     fun provideFoodRepositoryDataSource(
-        foodRemoteRecipesDataSource: FoodRemoteRecipesDataSource
+        foodRemoteRecipesDataSource: FoodRemoteRecipesDataSource,
+        localDataSourceModule: RecipesLocalDataSource
     ): FoodRepository {
-        return FoodRemoteRepositoryDataSourceImpl(foodRemoteRecipesDataSource)
+        return FoodRemoteRepositoryDataSourceImpl(
+            foodRemoteRecipesDataSource,
+            localDataSourceModule
+        )
     }
 }

@@ -2,10 +2,14 @@ package br.com.raveline.newfoods.presentation.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import br.com.raveline.newfoods.domain.usecases.GetFoodRecipesFromDatabaseUseCase
+import br.com.raveline.newfoods.domain.usecases.SaveRecipesDatabaseUseCase
 import br.com.raveline.newfoods.utils.Constants
 
 class RecipesViewModel(
-     application: Application
+     application: Application,
+     saveRecipesDatabaseUseCase: SaveRecipesDatabaseUseCase,
+     getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase
 ):AndroidViewModel(application) {
      fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()

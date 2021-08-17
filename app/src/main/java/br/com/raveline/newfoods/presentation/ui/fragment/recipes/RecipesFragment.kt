@@ -13,6 +13,7 @@ import br.com.raveline.newfoods.presentation.ui.adapter.recipes.RecipesAdapter
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModel
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModelFactory
 import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModel
+import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModelFactory
 import br.com.raveline.newfoods.utils.Constants.Companion.showErrorSnackBar
 import br.com.raveline.newfoods.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,13 +29,16 @@ class RecipesFragment : Fragment() {
     @Inject
     lateinit var factory: MainViewModelFactory
 
+    @Inject
+    lateinit var recipesFactory:RecipesViewModelFactory
+
     private val recipesAdapter by lazy { RecipesAdapter() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-        recipesViewModel = ViewModelProvider(this).get(RecipesViewModel::class.java)
+        recipesViewModel = ViewModelProvider(this,recipesFactory).get(RecipesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -62,7 +66,6 @@ class RecipesFragment : Fragment() {
                     hideShimmer()
                     response.data.let { recipe ->
                         recipesAdapter.differ.submitList(recipe?.recipes)
-                        //  recipesAdapter.setRecipeData(recipe!!)
                     }
                 }
 
@@ -87,7 +90,6 @@ class RecipesFragment : Fragment() {
         }
 
     }
-
 
     private fun hideShimmer() {
         recipesBinding.shimmerRecyclerView.hideShimmer()
