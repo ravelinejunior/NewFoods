@@ -1,4 +1,4 @@
-package br.com.raveline.newfoods.data.db
+package br.com.raveline.newfoods.utils
 
 import androidx.room.TypeConverter
 import br.com.raveline.newfoods.data.model.Recipes
