@@ -5,22 +5,35 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import br.com.raveline.newfoods.R
+import br.com.raveline.newfoods.data.db.recipe.entity.RecipesEntity
 import br.com.raveline.newfoods.data.model.Recipes
+import br.com.raveline.newfoods.domain.usecases.GetFoodRecipesFromDatabaseUseCase
 import br.com.raveline.newfoods.domain.usecases.GetRecipesUseCase
+import br.com.raveline.newfoods.domain.usecases.SaveRecipesDatabaseUseCase
 import br.com.raveline.newfoods.utils.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class MainViewModel(
     private val getRecipesUseCase: GetRecipesUseCase,
+    private val saveRecipesDatabaseUseCase: SaveRecipesDatabaseUseCase,
+    getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase,
     private val app: Application
 ) : AndroidViewModel(app) {
 
     var recipesLiveData: MutableLiveData<Resource<Recipes>> = MutableLiveData()
+
+    //Room Database
+    val recipesLocalLiveData: LiveData<List<RecipesEntity>> =
+        getFoodRecipesFromDatabaseUseCase.execute().asLiveData()
+
+    private fun insertRecipes(recipesEntity: RecipesEntity) =
+        viewModelScope.launch(Dispatchers.IO) {
+            saveRecipesDatabaseUseCase.execute(recipesEntity)
+        }
 
     fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
         getRecipesCall(queries)
@@ -30,13 +43,27 @@ class MainViewModel(
         if (isNetworkAvailable(app)) {
             try {
                 val response = getRecipesUseCase.execute(queries)
-                recipesLiveData.postValue(handleFoodRecipesResponse(response))
+                recipesLiveData.value =  (handleFoodRecipesResponse(response))
+
+                //saving into database
+                val foodRecipe = recipesLiveData.value!!.data
+                if (foodRecipe != null) {
+                    getRecipesFromDatabase(foodRecipe)
+                }
+
             } catch (e: Exception) {
                 recipesLiveData.postValue(Resource.Error(e.message))
             }
         } else {
             recipesLiveData.postValue(Resource.Error(app.getString(R.string.no_connection)))
         }
+    }
+
+    private fun getRecipesFromDatabase(foodRecipe: Recipes) {
+        //create a entity
+        val recipesEntity = RecipesEntity(foodRecipe)
+
+        insertRecipes(recipesEntity)
     }
 
     //Não passa de uma função de conversão com um nome mais bonitinho

@@ -7,13 +7,11 @@ import br.com.raveline.newfoods.domain.usecases.GetFoodRecipesFromDatabaseUseCas
 import br.com.raveline.newfoods.domain.usecases.SaveRecipesDatabaseUseCase
 
 class RecipesViewModelFactory(
-    private val application: Application,
-    private val saveRecipesDatabaseUseCase: SaveRecipesDatabaseUseCase,
-    private val getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase
+    private val application: Application
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return RecipesViewModel(
-            application, saveRecipesDatabaseUseCase, getFoodRecipesFromDatabaseUseCase,
+            application
         ) as T
     }
 }

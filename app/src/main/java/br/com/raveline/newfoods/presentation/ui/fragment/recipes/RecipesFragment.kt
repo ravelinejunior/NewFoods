@@ -1,6 +1,7 @@
 package br.com.raveline.newfoods.presentation.ui.fragment.recipes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModelFactory
 import br.com.raveline.newfoods.utils.Constants.Companion.showErrorSnackBar
 import br.com.raveline.newfoods.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,7 +32,7 @@ class RecipesFragment : Fragment() {
     lateinit var factory: MainViewModelFactory
 
     @Inject
-    lateinit var recipesFactory:RecipesViewModelFactory
+    lateinit var recipesFactory: RecipesViewModelFactory
 
     private val recipesAdapter by lazy { RecipesAdapter() }
 
@@ -38,7 +40,7 @@ class RecipesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-        recipesViewModel = ViewModelProvider(this,recipesFactory).get(RecipesViewModel::class.java)
+        recipesViewModel = ViewModelProvider(this, recipesFactory).get(RecipesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -49,36 +51,11 @@ class RecipesFragment : Fragment() {
         recipesBinding = FragmentRecipesBinding.inflate(inflater, container, false)
         setupRecyclerView()
         lifecycleScope.launchWhenCreated {
-            requestApiData()
+            getData()
         }
 
         return recipesBinding.root
 
-    }
-
-
-    private fun requestApiData() {
-        mainViewModel.getRecipes(recipesViewModel.applyQueries())
-
-        mainViewModel.recipesLiveData.observe(viewLifecycleOwner, { response ->
-            when (response) {
-                is Resource.Success -> {
-                    hideShimmer()
-                    response.data.let { recipe ->
-                        recipesAdapter.differ.submitList(recipe?.recipes)
-                    }
-                }
-
-                is Resource.Error -> {
-                    hideShimmer()
-                    showErrorSnackBar(recipesBinding.root, response.message.toString())
-                }
-
-                is Resource.Loading -> {
-                    showShimmerEffect()
-                }
-            }
-        })
     }
 
     private fun setupRecyclerView() {
@@ -90,6 +67,61 @@ class RecipesFragment : Fragment() {
         }
 
     }
+
+    private fun getData() {
+        //VERIFICA SE EXISTE DADOS NO BANCO PRIMEIRO ANTES DE ENVIAR A REQUISIÇÃO
+
+        lifecycleScope.launch {
+            mainViewModel.recipesLocalLiveData.observe(viewLifecycleOwner, { recipesDatabase ->
+                if (recipesDatabase.isNotEmpty()) {
+                    recipesAdapter.setRecipeData(recipesDatabase[0].recipes)
+                    Log.i("TAGFRAGMENT", "getData: from database")
+                    hideShimmer()
+                } else {
+                    requestApiData()
+                    Log.i("TAGFRAGMENT", "getData: from api")
+                }
+            })
+        }
+    }
+
+
+    private fun requestApiData() {
+        mainViewModel.getRecipes(recipesViewModel.applyQueries())
+
+        mainViewModel.recipesLiveData.observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideShimmer()
+                    response.data.let { recipe ->
+                        recipesAdapter.differ.submitList(recipe!!.recipes)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideShimmer()
+                    loadDataFromCache()
+                    showErrorSnackBar(recipesBinding.root, response.message.toString())
+                }
+
+                is Resource.Loading -> {
+                    showShimmerEffect()
+                }
+            }
+        })
+    }
+
+    private fun loadDataFromCache() {
+        lifecycleScope.launch {
+            mainViewModel.recipesLocalLiveData.observe(viewLifecycleOwner, { database ->
+                if (database.isNotEmpty()) {
+                    recipesAdapter.setRecipeData(database[0].recipes)
+                }
+            })
+        }
+    }
+
+
 
     private fun hideShimmer() {
         recipesBinding.shimmerRecyclerView.hideShimmer()

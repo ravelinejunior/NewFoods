@@ -21,22 +21,23 @@ class ViewModelFactoryModule {
     @Provides
     fun provideMainViewModel(
         getRecipesUseCase: GetRecipesUseCase,
+        saveRecipesDatabaseUseCase: SaveRecipesDatabaseUseCase,
+        getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase,
         application: Application
     ): MainViewModelFactory {
-        return MainViewModelFactory(getRecipesUseCase, application)
+        return MainViewModelFactory(
+            getRecipesUseCase, saveRecipesDatabaseUseCase,
+            getFoodRecipesFromDatabaseUseCase, application
+        )
     }
 
     @Singleton
     @Provides
     fun provideRecipesViewModel(
-        application: Application,
-        saveRecipesDatabaseUseCase: SaveRecipesDatabaseUseCase,
-        getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase
+        application: Application
     ): RecipesViewModelFactory {
         return RecipesViewModelFactory(
-            application,
-            saveRecipesDatabaseUseCase,
-            getFoodRecipesFromDatabaseUseCase
+            application
         )
     }
 

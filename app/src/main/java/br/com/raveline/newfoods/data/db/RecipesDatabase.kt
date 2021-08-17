@@ -10,7 +10,7 @@ import br.com.raveline.newfoods.utils.RecipesTypeConverter
 @Database(
     entities = [RecipesEntity::class],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 @TypeConverters(RecipesTypeConverter::class)
 abstract class RecipesDatabase : RoomDatabase() {

@@ -1,6 +1,5 @@
 package br.com.raveline.newfoods.presentation.ui.adapter.recipes
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -22,7 +21,6 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
             return oldItem == newItem
         }
 
-
     }
 
     val differ = AsyncListDiffer(this, callback)
@@ -36,11 +34,14 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val recipe = differ.currentList[position]
+        val recipe =
+            if (differ.currentList.size > 0) differ.currentList[position] else recipesList[position]
         holder.bind(recipe)
     }
 
-    override fun getItemCount(): Int = differ.currentList.size
+    override fun getItemCount(): Int {
+        return if (differ.currentList.size > 0) differ.currentList.size else recipesList.size
+    }
 
     class MyViewHolder(private val binding: ItemRecipesRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -48,7 +49,7 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
         fun bind(recipe: Recipe) {
             binding.recipe = recipe
             binding.executePendingBindings()
-           // Log.i("Adapter", recipe.toString())
+            // Log.i("Adapter", recipe.toString())
         }
 
     }
