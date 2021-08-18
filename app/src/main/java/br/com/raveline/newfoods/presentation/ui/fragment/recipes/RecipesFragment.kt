@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.databinding.FragmentRecipesBinding
 import br.com.raveline.newfoods.presentation.ui.adapter.recipes.RecipesAdapter
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModel
@@ -55,6 +57,10 @@ class RecipesFragment : Fragment() {
         setupRecyclerView()
         lifecycleScope.launchWhenCreated {
             getData()
+        }
+
+        recipesBinding!!.floatingActionButton.setOnClickListener {
+            findNavController().navigate(R.id.action_recipesFragment_id_to_recipesBottomSheet)
         }
 
         return recipesBinding!!.root

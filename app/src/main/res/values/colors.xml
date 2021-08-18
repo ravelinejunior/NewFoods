@@ -27,7 +27,7 @@
     <!-- Custom Chip Style -->
     <color name="checkedChipBackgroundColor">#4DB71C1C</color>
     <color name="chipBackgroundColor">#33004D40</color>
-    <color name="checkedChipTextColor">@color/red</color>
+    <color name="checkedChipTextColor">@color/dark_orange</color>
     <color name="chipTextColor">@color/darkGray</color>
     <color name="dark_orange">#F83F05</color>
 </resources>

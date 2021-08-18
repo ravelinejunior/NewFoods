@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_recipesFragment_to_jokeFragment"
             app:destination="@id/jokeFragment_id" />
+        <action
+            android:id="@+id/action_recipesFragment_id_to_recipesBottomSheet"
+            app:destination="@id/recipesBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment_id"
@@ -41,4 +44,12 @@
             android:id="@+id/action_jokeFragment_to_favoritesFragment"
             app:destination="@id/favoritesFragment_id" />
     </fragment>
+    <dialog
+        android:id="@+id/recipesBottomSheet"
+        android:name="br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesBottomSheet"
+        android:label="RecipesBottomSheet" >
+        <action
+            android:id="@+id/action_recipesBottomSheet_to_recipesFragment_id"
+            app:destination="@id/recipesFragment_id" />
+    </dialog>
 </navigation>
