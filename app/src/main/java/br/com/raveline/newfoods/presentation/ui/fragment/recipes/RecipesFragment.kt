@@ -25,7 +25,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
 
-    private lateinit var recipesBinding: FragmentRecipesBinding
+    private var recipesBinding: FragmentRecipesBinding? = null
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
 
@@ -50,18 +50,20 @@ class RecipesFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         recipesBinding = FragmentRecipesBinding.inflate(inflater, container, false)
+        recipesBinding!!.lifecycleOwner = this
+        recipesBinding!!.mainViewModel = mainViewModel
         setupRecyclerView()
         lifecycleScope.launchWhenCreated {
             getData()
         }
 
-        return recipesBinding.root
+        return recipesBinding!!.root
 
     }
 
     private fun setupRecyclerView() {
 
-        recipesBinding.shimmerRecyclerView.apply {
+        recipesBinding!!.shimmerRecyclerView.apply {
             adapter = recipesAdapter
             layoutManager = LinearLayoutManager(requireContext())
             showShimmerEffect()
@@ -102,7 +104,7 @@ class RecipesFragment : Fragment() {
                 is Resource.Error -> {
                     hideShimmer()
                     loadDataFromCache()
-                    showErrorSnackBar(recipesBinding.root, response.message.toString())
+                    showErrorSnackBar(recipesBinding!!.root, response.message.toString())
                 }
 
                 is Resource.Loading -> {
@@ -123,14 +125,17 @@ class RecipesFragment : Fragment() {
     }
 
 
-
     private fun hideShimmer() {
-        recipesBinding.shimmerRecyclerView.hideShimmer()
+        recipesBinding?.shimmerRecyclerView?.hideShimmer()
     }
 
     private fun showShimmerEffect() {
-        recipesBinding.shimmerRecyclerView.showShimmer()
+        recipesBinding?.shimmerRecyclerView?.showShimmer()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        recipesBinding = null
+    }
 
 }

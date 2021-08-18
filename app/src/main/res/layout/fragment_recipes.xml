@@ -1,54 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context="br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.todkars.shimmer.ShimmerRecyclerView
-        android:id="@+id/shimmer_recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:shimmer_recycler_item_count="4"
-        android:visibility="visible"
-        app:shimmer_recycler_layout="@layout/item_shimmer_layout"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginVertical="8dp"
-        android:orientation="vertical"
-        tools:listitem="@layout/item_shimmer_layout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:backgroundTint="@color/dark_orange"
-        android:src="@drawable/ic_baseline_restaurant_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white"
-        android:contentDescription="@string/app_name" />
+        <variable
+            name="mainViewModel"
+            type="br.com.raveline.newfoods.presentation.viewmodel.MainViewModel" />
 
-    <ImageView
-        android:id="@+id/iv_no_internet_connection_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        android:src="@drawable/no_internet_connection"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/no_internet" />
+    </data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context="br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesFragment">
+
+        <com.todkars.shimmer.ShimmerRecyclerView
+            android:id="@+id/shimmer_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shimmer_recycler_item_count="4"
+            app:shimmer_recycler_layout="@layout/item_shimmer_layout"
+            tools:listitem="@layout/item_shimmer_layout" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:contentDescription="@string/app_name"
+            android:focusable="true"
+            android:src="@drawable/ic_baseline_restaurant_24"
+            app:backgroundTint="@color/dark_orange"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/iv_no_internet_connection_id"
+            readApiResponse="@{mainViewModel.recipesLiveData}"
+            readDatabase="@{mainViewModel.recipesLocalLiveData}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:contentDescription="@string/no_internet"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_internet_connection"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

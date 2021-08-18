@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import br.com.raveline.newfoods.R
 import coil.load
+import coil.size.Scale
 
 class BindingAdapter {
     companion object {
@@ -15,7 +16,8 @@ class BindingAdapter {
         @BindingAdapter("setImageRecipe")
         fun setImageRecipe(imageView: ImageView, imageUrl: String) {
             imageView.load(imageUrl) {
-                crossfade(600)
+                crossfade(400)
+                error(R.drawable.no_image_loading)
             }
         }
 
