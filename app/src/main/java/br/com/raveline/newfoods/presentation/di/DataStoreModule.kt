@@ -5,6 +5,7 @@ import br.com.raveline.newfoods.data.datastore.DataStoreRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -14,7 +15,7 @@ class DataStoreModule {
 
     @Provides
     @Singleton
-    fun provideDataStore(context: Context): DataStoreRepository {
+    fun provideDataStore(@ApplicationContext context: Context): DataStoreRepository {
         return DataStoreRepository(context)
     }
 }

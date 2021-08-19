@@ -11,12 +11,14 @@ import br.com.raveline.newfoods.utils.Constants.Companion.PREFERENCES_DIET_TYPE_
 import br.com.raveline.newfoods.utils.Constants.Companion.PREFERENCES_MEAL_TYPE
 import br.com.raveline.newfoods.utils.Constants.Companion.PREFERENCES_MEAL_TYPE_ID
 import br.com.raveline.newfoods.utils.Constants.Companion.PREFERENCES_NAME
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-class DataStoreRepository(private val context: Context) {
+
+class DataStoreRepository(@ApplicationContext private val context: Context) {
     private object PreferencesKeys {
         val selectedMealType = stringPreferencesKey(PREFERENCES_MEAL_TYPE)
         val selectedMealTypeId = intPreferencesKey(PREFERENCES_MEAL_TYPE_ID)
