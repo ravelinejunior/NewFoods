@@ -1,6 +1,7 @@
 package br.com.raveline.newfoods.presentation.di
 
 import android.app.Application
+import br.com.raveline.newfoods.data.datastore.DataStoreRepository
 import br.com.raveline.newfoods.domain.usecases.GetFoodRecipesFromDatabaseUseCase
 import br.com.raveline.newfoods.domain.usecases.GetRecipesUseCase
 import br.com.raveline.newfoods.domain.usecases.SaveRecipesDatabaseUseCase
@@ -34,10 +35,12 @@ class ViewModelFactoryModule {
     @Singleton
     @Provides
     fun provideRecipesViewModel(
-        application: Application
+        application: Application,
+        dataStoreRepository: DataStoreRepository
     ): RecipesViewModelFactory {
         return RecipesViewModelFactory(
-            application
+            application,
+            dataStoreRepository
         )
     }
 
