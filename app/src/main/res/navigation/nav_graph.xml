@@ -9,13 +9,11 @@
         android:id="@+id/recipesFragment_id"
         android:name="br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesFragment"
         android:label="fragment_recipes"
-        tools:layout="@layout/fragment_recipes" >
-        <action
-            android:id="@+id/action_recipesFragment_to_favoritesFragment"
-            app:destination="@id/favoritesFragment_id" />
-        <action
-            android:id="@+id/action_recipesFragment_to_jokeFragment"
-            app:destination="@id/jokeFragment_id" />
+        tools:layout="@layout/fragment_recipes">
+        <argument
+            android:name="backFromBottomSheet"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_recipesFragment_id_to_recipesBottomSheet"
             app:destination="@id/recipesBottomSheet" />
@@ -24,32 +22,19 @@
         android:id="@+id/favoritesFragment_id"
         android:name="br.com.raveline.newfoods.presentation.ui.fragment.favorites.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" >
-        <action
-            android:id="@+id/action_favoritesFragment_to_recipesFragment"
-            app:destination="@id/recipesFragment_id" />
-        <action
-            android:id="@+id/action_favoritesFragment_to_jokeFragment"
-            app:destination="@id/jokeFragment_id" />
-    </fragment>
+        tools:layout="@layout/fragment_favorites"/>
     <fragment
         android:id="@+id/jokeFragment_id"
         android:name="br.com.raveline.newfoods.presentation.ui.fragment.jokes.JokeFragment"
         android:label="fragment_joke"
-        tools:layout="@layout/fragment_joke" >
-        <action
-            android:id="@+id/action_jokeFragment_to_recipesFragment"
-            app:destination="@id/recipesFragment_id" />
-        <action
-            android:id="@+id/action_jokeFragment_to_favoritesFragment"
-            app:destination="@id/favoritesFragment_id" />
-    </fragment>
+        tools:layout="@layout/fragment_joke"/>
     <dialog
         android:id="@+id/recipesBottomSheet"
         android:name="br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesBottomSheet"
-        android:label="RecipesBottomSheet" >
+        android:label="RecipesBottomSheet">
         <action
             android:id="@+id/action_recipesBottomSheet_to_recipesFragment_id"
             app:destination="@id/recipesFragment_id" />
+
     </dialog>
 </navigation>

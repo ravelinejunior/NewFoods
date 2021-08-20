@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
+import androidx.navigation.fragment.findNavController
 import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModel
 import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModelFactory
@@ -58,7 +59,7 @@ class RecipesBottomSheet : BottomSheetDialogFragment() {
         //SELECIONA O TIPO DE MEAL
         mView.mealType_chipGroup_id.setOnCheckedChangeListener { group, checkedId ->
             val chip = group.findViewById<Chip>(checkedId)
-            val selectedMealType = chip.textEndPadding.toString().toLowerCase(Locale.ROOT)
+            val selectedMealType = chip.text.toString().toLowerCase(Locale.ROOT)
             mealTypeChip = selectedMealType
             mealTypeChipId = checkedId
         }
@@ -79,6 +80,9 @@ class RecipesBottomSheet : BottomSheetDialogFragment() {
                 dietTypeChip,
                 dietTypeChipId
             )
+
+            val action = RecipesBottomSheetDirections.actionRecipesBottomSheetToRecipesFragmentId().setBackFromBottomSheet(true)
+            findNavController().navigate(action)
         }
 
         return mView

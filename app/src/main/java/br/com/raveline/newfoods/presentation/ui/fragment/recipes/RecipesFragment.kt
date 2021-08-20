@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.databinding.FragmentRecipesBinding
@@ -30,6 +31,8 @@ class RecipesFragment : Fragment() {
     private var recipesBinding: FragmentRecipesBinding? = null
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
+
+    private val args by navArgs<RecipesFragmentArgs>()
 
     @Inject
     lateinit var factory: MainViewModelFactory
@@ -82,13 +85,20 @@ class RecipesFragment : Fragment() {
 
         lifecycleScope.launch {
             mainViewModel.recipesLocalLiveData.observeOnce(viewLifecycleOwner, { recipesDatabase ->
-                if (recipesDatabase.isNotEmpty()) {
+                try {
+                    if (recipesDatabase.isNotEmpty() && !args.backFromBottomSheet) {
+                        recipesAdapter.setRecipeData(recipesDatabase[0].recipes)
+                        Log.i("TAGFRAGMENT", "getData: from database")
+                        hideShimmer()
+                    } else {
+                        requestApiData()
+                        Log.i("TAGFRAGMENT", "getData: from api")
+                    }
+                } catch (e: Exception) {
                     recipesAdapter.setRecipeData(recipesDatabase[0].recipes)
                     Log.i("TAGFRAGMENT", "getData: from database")
+                    Log.i("TAGFRAGMENT", e.message.toString())
                     hideShimmer()
-                } else {
-                    requestApiData()
-                    Log.i("TAGFRAGMENT", "getData: from api")
                 }
             })
         }
