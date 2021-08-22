@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import br.com.raveline.newfoods.utils.Constants.Companion.DEFAULT_DIET_TYPE
 import br.com.raveline.newfoods.utils.Constants.Companion.DEFAULT_MEAL_TYPE
+import br.com.raveline.newfoods.utils.Constants.Companion.PREFERENCES_BACK_ONLINE
 import br.com.raveline.newfoods.utils.Constants.Companion.PREFERENCES_DIET_TYPE
 import br.com.raveline.newfoods.utils.Constants.Companion.PREFERENCES_DIET_TYPE_ID
 import br.com.raveline.newfoods.utils.Constants.Companion.PREFERENCES_MEAL_TYPE
@@ -24,6 +25,7 @@ class DataStoreRepository(@ApplicationContext private val context: Context) {
         val selectedMealTypeId = intPreferencesKey(PREFERENCES_MEAL_TYPE_ID)
         val selectedDietType = stringPreferencesKey(PREFERENCES_DIET_TYPE)
         val selectedDietTypeId = intPreferencesKey(PREFERENCES_DIET_TYPE_ID)
+        val backOnline = booleanPreferencesKey(PREFERENCES_BACK_ONLINE)
     }
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
@@ -43,6 +45,12 @@ class DataStoreRepository(@ApplicationContext private val context: Context) {
         }
     }
 
+    suspend fun saveBackOnline(backOnline: Boolean) {
+        context.dataStore.edit { prefs ->
+            prefs[PreferencesKeys.backOnline] = backOnline
+        }
+    }
+
     val readMealAndDietType: Flow<MealAndDietType> = context.dataStore.data
         .catch { exception ->
             if (exception is IOException) {
@@ -57,6 +65,16 @@ class DataStoreRepository(@ApplicationContext private val context: Context) {
             MealAndDietType(
                 selectedMealType, selectedMealTypeId, selectedDietType, selectedDietTypeId
             )
+        }
+
+    val readBackOnline: Flow<Boolean> = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else throw exception
+        }.map { prefs ->
+            val backOnline = prefs[PreferencesKeys.backOnline] ?: false
+            backOnline
         }
 }
 

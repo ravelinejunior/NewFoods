@@ -1,12 +1,15 @@
 package br.com.raveline.newfoods.presentation.viewmodel
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import br.com.raveline.newfoods.data.datastore.DataStoreRepository
 import br.com.raveline.newfoods.utils.Constants
 import br.com.raveline.newfoods.utils.Constants.Companion.DEFAULT_DIET_TYPE
 import br.com.raveline.newfoods.utils.Constants.Companion.DEFAULT_MEAL_TYPE
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -20,7 +23,11 @@ class RecipesViewModel @Inject constructor(
     private var mealType = DEFAULT_MEAL_TYPE
     private var dietType = DEFAULT_DIET_TYPE
 
+    var isConnected = false
+    var backOnline = false
+
     val readMealAndDietType = dataStoreRepository.readMealAndDietType
+    val readBackOnline = dataStoreRepository.readBackOnline.asLiveData()
 
     fun saveMealAndDietPreferences(
         mealType: String,
@@ -31,6 +38,10 @@ class RecipesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreRepository.saveMealAndDiet(mealType, mealTypeId, dietType, dietTypeId)
         }
+
+    fun saveBackOnline(backOnline: Boolean) = viewModelScope.launch(Dispatchers.IO) {
+        dataStoreRepository.saveBackOnline(backOnline)
+    }
 
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
@@ -51,5 +62,19 @@ class RecipesViewModel @Inject constructor(
 
         return queries
 
+    }
+
+    fun showNetworkStatus(view: View) {
+        if (!isConnected) {
+            Snackbar.make(view, "No Internet Connection", Snackbar.LENGTH_SHORT)
+                .setAnimationMode(Snackbar.ANIMATION_MODE_FADE).show()
+            saveBackOnline(true)
+        } else if (isConnected) {
+            if (backOnline) {
+                Snackbar.make(view, "We´re Back Online", Snackbar.LENGTH_SHORT)
+                    .setAnimationMode(Snackbar.ANIMATION_MODE_FADE).show()
+                saveBackOnline(false)
+            }
+        }
     }
 }

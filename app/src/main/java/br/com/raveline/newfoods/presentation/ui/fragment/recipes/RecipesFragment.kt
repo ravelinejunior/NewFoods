@@ -1,10 +1,12 @@
 package br.com.raveline.newfoods.presentation.ui.fragment.recipes
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -20,8 +22,10 @@ import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModel
 import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModelFactory
 import br.com.raveline.newfoods.utils.Constants.Companion.showErrorSnackBar
 import br.com.raveline.newfoods.utils.Resource
+import br.com.raveline.newfoods.utils.listeners.NetworkListeners
 import br.com.raveline.newfoods.utils.observeOnce
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,6 +35,9 @@ class RecipesFragment : Fragment() {
     private var recipesBinding: FragmentRecipesBinding? = null
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
+
+    @Inject
+    lateinit var networkListeners: NetworkListeners
 
     private val args by navArgs<RecipesFragmentArgs>()
 
@@ -49,6 +56,7 @@ class RecipesFragment : Fragment() {
         recipesViewModel = ViewModelProvider(this, recipesFactory).get(RecipesViewModel::class.java)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,12 +66,36 @@ class RecipesFragment : Fragment() {
         recipesBinding!!.lifecycleOwner = this
         recipesBinding!!.mainViewModel = mainViewModel
         setupRecyclerView()
+
+        //RECUPERA O VALOR DO BACKONLINE E SETA NO VIEWMODEL
+        recipesViewModel.readBackOnline.observe(viewLifecycleOwner, {
+            recipesViewModel.backOnline = it
+        })
+
         lifecycleScope.launchWhenCreated {
-            getData()
+
+            networkListeners.checkNetworkAvailability(recipesBinding?.root!!.context)
+                .collect { status ->
+                    Log.d("TAGNETWORK", "onCreateView: $status")
+                    recipesViewModel.isConnected = status
+                    view?.let { recipesViewModel.showNetworkStatus(it) }
+
+                    //leitura de dados para exibição
+                    getData()
+
+                    if (!status) {
+                        recipesBinding!!.floatingActionButton.alpha = 0.1F
+                    } else recipesBinding!!.floatingActionButton.alpha = 1F
+                }
         }
 
         recipesBinding!!.floatingActionButton.setOnClickListener {
-            findNavController().navigate(R.id.action_recipesFragment_id_to_recipesBottomSheet)
+            if (recipesViewModel.isConnected) {
+                findNavController().navigate(R.id.action_recipesFragment_id_to_recipesBottomSheet)
+            } else {
+
+                view?.let { it1 -> recipesViewModel.showNetworkStatus(it1) }
+            }
         }
 
         return recipesBinding!!.root
