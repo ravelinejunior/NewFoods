@@ -11,6 +11,7 @@ import br.com.raveline.newfoods.data.db.recipe.entity.RecipesEntity
 import br.com.raveline.newfoods.data.model.Recipes
 import br.com.raveline.newfoods.domain.usecases.GetFoodRecipesFromDatabaseUseCase
 import br.com.raveline.newfoods.domain.usecases.GetRecipesUseCase
+import br.com.raveline.newfoods.domain.usecases.GetSearchedUseCase
 import br.com.raveline.newfoods.domain.usecases.SaveRecipesDatabaseUseCase
 import br.com.raveline.newfoods.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -21,10 +22,12 @@ class MainViewModel(
     private val getRecipesUseCase: GetRecipesUseCase,
     private val saveRecipesDatabaseUseCase: SaveRecipesDatabaseUseCase,
     getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase,
+    private val getSearchedUseCase: GetSearchedUseCase,
     private val app: Application
 ) : AndroidViewModel(app) {
 
     var recipesLiveData: MutableLiveData<Resource<Recipes>> = MutableLiveData()
+    var searchedRecipesLiveData: MutableLiveData<Resource<Recipes>> = MutableLiveData()
 
     //Room Database
     val recipesLocalLiveData: LiveData<List<RecipesEntity>> =
@@ -35,15 +38,36 @@ class MainViewModel(
             saveRecipesDatabaseUseCase.execute(recipesEntity)
         }
 
+    // FROM REMOTE NETWORKS
     fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
         getRecipesCall(queries)
+    }
+
+    // FROM REMOTE SEARCHES
+    fun searchRecipes(searchQuery: Map<String, String>) = viewModelScope.launch {
+        searchRecipesSafeCall(searchQuery)
+    }
+
+    private suspend fun searchRecipesSafeCall(searchQuery: Map<String, String>) {
+        searchedRecipesLiveData.postValue(Resource.Loading())
+        if (isNetworkAvailable(app)) {
+            try {
+                val response = getSearchedUseCase.execute(searchQuery)
+                searchedRecipesLiveData.value = (handleFoodRecipesResponse(response))
+
+            } catch (e: Exception) {
+                searchedRecipesLiveData.postValue(Resource.Error(e.message))
+            }
+        } else {
+            searchedRecipesLiveData.postValue(Resource.Error(app.getString(R.string.no_connection)))
+        }
     }
 
     private suspend fun getRecipesCall(queries: Map<String, String>) {
         if (isNetworkAvailable(app)) {
             try {
                 val response = getRecipesUseCase.execute(queries)
-                recipesLiveData.value =  (handleFoodRecipesResponse(response))
+                recipesLiveData.value = (handleFoodRecipesResponse(response))
 
                 //saving into database
                 val foodRecipe = recipesLiveData.value!!.data
@@ -58,6 +82,7 @@ class MainViewModel(
             recipesLiveData.postValue(Resource.Error(app.getString(R.string.no_connection)))
         }
     }
+
 
     private fun getRecipesFromDatabase(foodRecipe: Recipes) {
         //create a entity

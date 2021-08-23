@@ -9,6 +9,7 @@ import br.com.raveline.newfoods.data.datastore.DataStoreRepository
 import br.com.raveline.newfoods.utils.Constants
 import br.com.raveline.newfoods.utils.Constants.Companion.DEFAULT_DIET_TYPE
 import br.com.raveline.newfoods.utils.Constants.Companion.DEFAULT_MEAL_TYPE
+import br.com.raveline.newfoods.utils.Constants.Companion.QUERY_SEARCH
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -62,6 +63,18 @@ class RecipesViewModel @Inject constructor(
 
         return queries
 
+    }
+
+    fun applySearchQuery(query: String): HashMap<String, String> {
+        val queries: HashMap<String, String> = HashMap()
+
+        queries[QUERY_SEARCH] = query
+        queries[Constants.QUERY_NUMBER] = Constants.DEFAULT_RECIPES_NUMBER
+        queries[Constants.QUERY_API_KEY] = Constants.API_KEY
+        queries[Constants.QUERY_ADD_RECIPE_INFORMATION] = "true"
+        queries[Constants.QUERY_FILL_INGREDIENTS] = "true"
+
+        return queries
     }
 
     fun showNetworkStatus(view: View) {

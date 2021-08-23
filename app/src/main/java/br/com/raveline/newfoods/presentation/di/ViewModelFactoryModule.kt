@@ -4,6 +4,7 @@ import android.app.Application
 import br.com.raveline.newfoods.data.datastore.DataStoreRepository
 import br.com.raveline.newfoods.domain.usecases.GetFoodRecipesFromDatabaseUseCase
 import br.com.raveline.newfoods.domain.usecases.GetRecipesUseCase
+import br.com.raveline.newfoods.domain.usecases.GetSearchedUseCase
 import br.com.raveline.newfoods.domain.usecases.SaveRecipesDatabaseUseCase
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModelFactory
 import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModelFactory
@@ -24,11 +25,15 @@ class ViewModelFactoryModule {
         getRecipesUseCase: GetRecipesUseCase,
         saveRecipesDatabaseUseCase: SaveRecipesDatabaseUseCase,
         getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase,
+        getSearchedUseCase: GetSearchedUseCase,
         application: Application
     ): MainViewModelFactory {
         return MainViewModelFactory(
-            getRecipesUseCase, saveRecipesDatabaseUseCase,
-            getFoodRecipesFromDatabaseUseCase, application
+            getRecipesUseCase,
+            saveRecipesDatabaseUseCase,
+            getFoodRecipesFromDatabaseUseCase,
+            getSearchedUseCase,
+            application
         )
     }
 

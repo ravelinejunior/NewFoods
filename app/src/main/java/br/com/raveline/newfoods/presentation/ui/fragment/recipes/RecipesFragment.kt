@@ -3,10 +3,10 @@ package br.com.raveline.newfoods.presentation.ui.fragment.recipes
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.animation.AnimationUtils
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RecipesFragment : Fragment() {
+class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private var recipesBinding: FragmentRecipesBinding? = null
     private lateinit var mainViewModel: MainViewModel
@@ -66,6 +66,7 @@ class RecipesFragment : Fragment() {
         recipesBinding!!.lifecycleOwner = this
         recipesBinding!!.mainViewModel = mainViewModel
         setupRecyclerView()
+        setHasOptionsMenu(true)
 
         //RECUPERA O VALOR DO BACKONLINE E SETA NO VIEWMODEL
         recipesViewModel.readBackOnline.observe(viewLifecycleOwner, {
@@ -80,10 +81,21 @@ class RecipesFragment : Fragment() {
                     recipesViewModel.isConnected = status
                     view?.let { recipesViewModel.showNetworkStatus(it) }
 
+                    recipesBinding!!.floatingActionButton.animation =
+                        AnimationUtils.loadAnimation(
+                            requireContext(),
+                            android.R.anim.fade_in
+                        )
                     //leitura de dados para exibição
                     getData()
 
                     if (!status) {
+
+                        recipesBinding!!.floatingActionButton.animation =
+                            AnimationUtils.loadAnimation(
+                                requireContext(),
+                                android.R.anim.fade_out
+                            )
                         recipesBinding!!.floatingActionButton.alpha = 0.1F
                     } else recipesBinding!!.floatingActionButton.alpha = 1F
                 }
@@ -92,8 +104,8 @@ class RecipesFragment : Fragment() {
         recipesBinding!!.floatingActionButton.setOnClickListener {
             if (recipesViewModel.isConnected) {
                 findNavController().navigate(R.id.action_recipesFragment_id_to_recipesBottomSheet)
-            } else {
 
+            } else {
                 view?.let { it1 -> recipesViewModel.showNetworkStatus(it1) }
             }
         }
@@ -162,6 +174,35 @@ class RecipesFragment : Fragment() {
         })
     }
 
+
+    private fun searchApiData(searchQuery: String) {
+        hideShimmer()
+        mainViewModel.searchRecipes(recipesViewModel.applySearchQuery(searchQuery))
+        mainViewModel.searchedRecipesLiveData.observe(viewLifecycleOwner, { response ->
+
+            when (response) {
+                is Resource.Success -> {
+                    hideShimmer()
+                    val foodRecipe = response
+                    foodRecipe.let {
+                        recipesAdapter.differ.submitList(it.data?.recipes)
+                    }
+                }
+
+                is Resource.Error -> {
+                    hideShimmer()
+                    loadDataFromCache()
+                    showErrorSnackBar(recipesBinding!!.root, response.message.toString())
+                }
+
+                is Resource.Loading -> {
+                    showShimmerEffect()
+                }
+            }
+
+        })
+    }
+
     private fun loadDataFromCache() {
         lifecycleScope.launch {
             mainViewModel.recipesLocalLiveData.observe(viewLifecycleOwner, { database ->
@@ -170,6 +211,31 @@ class RecipesFragment : Fragment() {
                 }
             })
         }
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+
+        if(query != null){
+            searchApiData(query)
+        }
+
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        return false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_recipes_search, menu)
+
+        val search = menu.findItem(R.id.recipes_search_menu_id)
+        val searchView = search.actionView as? SearchView
+
+        searchView?.isSubmitButtonEnabled = true
+        searchView?.queryHint = "Ex: Banana Shake, Waffles"
+        searchView?.setOnQueryTextListener(this)
     }
 
 
@@ -185,5 +251,6 @@ class RecipesFragment : Fragment() {
         super.onDestroy()
         recipesBinding = null
     }
+
 
 }

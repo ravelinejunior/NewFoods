@@ -5,4 +5,6 @@ import retrofit2.Response
 
 interface FoodRemoteRecipesDataSource {
     suspend fun getFoodRecipes(queries: Map<String, String>): Response<Recipes>
+    suspend fun getSearchedFoodRecipes(queries: Map<String, String>): Response<Recipes>
+
 }

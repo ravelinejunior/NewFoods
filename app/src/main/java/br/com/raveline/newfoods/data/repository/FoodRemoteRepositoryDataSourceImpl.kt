@@ -24,4 +24,8 @@ class FoodRemoteRepositoryDataSourceImpl(
     override fun readFoodRecipes(): Flow<List<RecipesEntity>> {
         return localDataSource.readRecipes()
     }
+
+    override suspend fun getSearchedFood(queries: Map<String, String>): Response<Recipes> {
+        return foodRemoteRecipesDataSource.getSearchedFoodRecipes(queries)
+    }
 }
