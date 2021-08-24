@@ -72,12 +72,12 @@
 
                 <TextView
                     android:id="@+id/description_recipesRow_id"
+                    parseHTML="@{recipe.summary}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:ellipsize="end"
                     android:maxLines="5"
-                    android:text="@{recipe.summary}"
                     android:textColor="@color/darkGray"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"

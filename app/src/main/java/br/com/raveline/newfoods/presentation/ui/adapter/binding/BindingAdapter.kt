@@ -12,20 +12,31 @@ import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.data.model.Recipe
 import br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesFragmentDirections
 import coil.load
-import coil.size.Scale
+import org.jsoup.Jsoup
 
 class BindingAdapter {
     companion object {
 
+        //parsear dados da web para remover as tags de html
+        @JvmStatic
+        @BindingAdapter("parseHTML")
+        fun parseHTML(textView: TextView, description: String?) {
+            if (description != null) {
+                val desc = Jsoup.parse(description).text()
+                textView.text = desc
+            }
+        }
+
         @JvmStatic
         @BindingAdapter("onRecipeClickListener")
-        fun onRecipeClickListener(recipesRowLayout:ConstraintLayout,recipe: Recipe){
+        fun onRecipeClickListener(recipesRowLayout: ConstraintLayout, recipe: Recipe) {
             recipesRowLayout.setOnClickListener {
-                try{
-                    val action = RecipesFragmentDirections.actionRecipesFragmentIdToDetailsActivity(recipe)
+                try {
+                    val action =
+                        RecipesFragmentDirections.actionRecipesFragmentIdToDetailsActivity(recipe)
                     recipesRowLayout.findNavController().navigate(action)
-                }catch (e:Exception){
-                    Log.e("onRecipeClickListener", e.printStackTrace().toString() )
+                } catch (e: Exception) {
+                    Log.e("onRecipeClickListener", e.printStackTrace().toString())
                 }
             }
         }

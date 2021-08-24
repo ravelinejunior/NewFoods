@@ -50,4 +50,7 @@
     <string name="cheap">Cheap</string>
     <string name="description">Description</string>
     <string name="no_connection">No Internet Connection</string>
+    <string name="grams">Grams</string>
+    <string name="consistency">Consistency</string>
+    <string name="original_ingredient">Ingredient</string>
 </resources>

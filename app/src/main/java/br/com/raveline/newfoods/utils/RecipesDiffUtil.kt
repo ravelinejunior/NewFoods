@@ -3,9 +3,9 @@ package br.com.raveline.newfoods.utils
 import androidx.recyclerview.widget.DiffUtil
 import br.com.raveline.newfoods.data.model.Recipe
 
-class RecipesDiffUtil(
-    private val oldList: List<Recipe>,
-    private val newList: List<Recipe>
+class RecipesDiffUtil<T>(
+    private val oldList: List<T>,
+    private val newList: List<T>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 
