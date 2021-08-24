@@ -1,4 +1,4 @@
-package br.com.raveline.newfoods.presentation
+package br.com.raveline.newfoods.presentation.ui
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -36,8 +36,6 @@ class DetailsActivity : AppCompatActivity() {
 
         //Inicializar pager Adapter daqui
         initPagerAdapter()
-
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

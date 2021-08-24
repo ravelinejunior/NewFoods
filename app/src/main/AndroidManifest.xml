@@ -17,7 +17,7 @@
         android:theme="@style/Theme.NewFoods"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".presentation.DetailsActivity"
+            android:name=".presentation.ui.DetailsActivity"
             android:label="Details"
             android:theme="@style/DetailsActivityStyle" />
         <activity
