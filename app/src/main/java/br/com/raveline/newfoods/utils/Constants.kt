@@ -34,6 +34,9 @@ class Constants {
         const val PREFERENCES_DIET_TYPE_ID = "dietTypeId"
         const val PREFERENCES_BACK_ONLINE = "backOnline"
 
+        //Recipe from main
+        const val BUNDLE_RECIPE_KEY = "bundle_recipe"
+
         fun showErrorSnackBar(view: View, message: String) {
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
         }

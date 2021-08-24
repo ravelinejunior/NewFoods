@@ -20,14 +20,13 @@
             android:id="@+id/toolbar_details_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_orange" />
+             />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout_details_id"
             style="@style/CustomTabLayoutDetailStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/orange"
             app:layout_scrollFlags="scroll|enterAlways"
             app:tabTextAppearance="@style/CustomTexTabLayoutDetailStyle" />
 
