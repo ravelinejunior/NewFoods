@@ -1,16 +1,34 @@
 package br.com.raveline.newfoods.presentation.ui.adapter.binding
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.navigation.findNavController
 import br.com.raveline.newfoods.R
+import br.com.raveline.newfoods.data.model.Recipe
+import br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesFragmentDirections
 import coil.load
 import coil.size.Scale
 
 class BindingAdapter {
     companion object {
+
+        @JvmStatic
+        @BindingAdapter("onRecipeClickListener")
+        fun onRecipeClickListener(recipesRowLayout:ConstraintLayout,recipe: Recipe){
+            recipesRowLayout.setOnClickListener {
+                try{
+                    val action = RecipesFragmentDirections.actionRecipesFragmentIdToDetailsActivity(recipe)
+                    recipesRowLayout.findNavController().navigate(action)
+                }catch (e:Exception){
+                    Log.e("onRecipeClickListener", e.printStackTrace().toString() )
+                }
+            }
+        }
 
         @JvmStatic
         @BindingAdapter("setImageRecipe")

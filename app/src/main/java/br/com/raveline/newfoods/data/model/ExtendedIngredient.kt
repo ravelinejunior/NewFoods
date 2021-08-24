@@ -1,8 +1,11 @@
 package br.com.raveline.newfoods.data.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class ExtendedIngredient(
     @SerializedName("aisle")
     val aisle: String?,
@@ -31,4 +34,4 @@ data class ExtendedIngredient(
     val originalString: String?,
     @SerializedName("unit")
     val unit: String?
-)
+):Parcelable

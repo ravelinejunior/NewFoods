@@ -49,7 +49,6 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val recipesAdapter by lazy { RecipesAdapter() }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
@@ -97,6 +96,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                                 android.R.anim.fade_out
                             )
                         recipesBinding!!.floatingActionButton.alpha = 0.1F
+
                     } else recipesBinding!!.floatingActionButton.alpha = 1F
                 }
         }
@@ -141,7 +141,6 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                 } catch (e: Exception) {
                     recipesAdapter.setRecipeData(recipesDatabase[0].recipes)
                     Log.i("TAGFRAGMENT", "getData: from database")
-                    Log.i("TAGFRAGMENT", e.message.toString())
                     hideShimmer()
                 }
             })

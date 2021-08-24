@@ -1,8 +1,12 @@
 package br.com.raveline.newfoods.data.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
+@Parcelize
 data class Recipe(
     @SerializedName("aggregateLikes")
     val aggregateLikes: Int?,
@@ -11,15 +15,15 @@ data class Recipe(
     @SerializedName("creditsText")
     val creditsText: String?,
     @SerializedName("cuisines")
-    val cuisines: List<Any>?,
+    val cuisines: @RawValue List<Any>?,
     @SerializedName("dairyFree")
     val dairyFree: Boolean?,
     @SerializedName("diets")
-    val diets: List<Any>?,
+    val diets: @RawValue List<Any>?,
     @SerializedName("dishTypes")
     val dishTypes: List<String>?,
     @SerializedName("extendedIngredients")
-    val extendedIngredients: List<ExtendedIngredient>?,
+    val extendedIngredients: @RawValue List<ExtendedIngredient>?,
     @SerializedName("gaps")
     val gaps: String?,
     @SerializedName("glutenFree")
@@ -39,9 +43,9 @@ data class Recipe(
     @SerializedName("lowFodmap")
     val lowFodmap: Boolean?,
     @SerializedName("occasions")
-    val occasions: List<Any>?,
+    val occasions: @RawValue List<Any>?,
     @SerializedName("originalId")
-    val originalId: Any?,
+    val originalId: @RawValue Any?,
     @SerializedName("pricePerServing")
     val pricePerServing: Double?,
     @SerializedName("readyInMinutes")
@@ -72,4 +76,4 @@ data class Recipe(
     val veryPopular: Boolean?,
     @SerializedName("weightWatcherSmartPoints")
     val weightWatcherSmartPoints: Int?
-)
+) : Parcelable
