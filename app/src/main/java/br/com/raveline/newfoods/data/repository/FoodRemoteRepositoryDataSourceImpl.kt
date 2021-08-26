@@ -1,5 +1,6 @@
 package br.com.raveline.newfoods.data.repository
 
+import br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity
 import br.com.raveline.newfoods.data.db.recipe.entity.RecipesEntity
 import br.com.raveline.newfoods.data.model.Recipes
 import br.com.raveline.newfoods.data.repository.datasource.FoodRemoteRecipesDataSource
@@ -27,5 +28,21 @@ class FoodRemoteRepositoryDataSourceImpl(
 
     override suspend fun getSearchedFood(queries: Map<String, String>): Response<Recipes> {
         return foodRemoteRecipesDataSource.getSearchedFoodRecipes(queries)
+    }
+
+    override suspend fun insertFavoriteRecipe(recipes: FavoriteEntity) {
+        localDataSource.insertFavoriteRecipe(recipes)
+    }
+
+    override fun readFavoritesRecipes(): Flow<List<FavoriteEntity>> {
+        return localDataSource.readFavoritesRecipes()
+    }
+
+    override suspend fun deleteFavoriteRecipe(recipes: FavoriteEntity) {
+        localDataSource.deleteFavoriteRecipe(recipes)
+    }
+
+    override suspend fun deleteAllFavoritesRecipes() {
+        localDataSource.deleteAllFavoritesRecipes()
     }
 }

@@ -1,10 +1,7 @@
 package br.com.raveline.newfoods.presentation.di
 
 import br.com.raveline.newfoods.domain.factory.FoodRepository
-import br.com.raveline.newfoods.domain.usecases.GetFoodRecipesFromDatabaseUseCase
-import br.com.raveline.newfoods.domain.usecases.GetRecipesUseCase
-import br.com.raveline.newfoods.domain.usecases.GetSearchedUseCase
-import br.com.raveline.newfoods.domain.usecases.SaveRecipesDatabaseUseCase
+import br.com.raveline.newfoods.domain.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,5 +34,11 @@ class UseCaseModule {
     @Singleton
     fun provideGetSearchedRecipesUseCase(foodRepository: FoodRepository): GetSearchedUseCase {
         return GetSearchedUseCase(foodRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetFavoritesUseCase(foodRepository: FoodRepository): GetFavoritesUseCase {
+        return GetFavoritesUseCase(foodRepository)
     }
 }

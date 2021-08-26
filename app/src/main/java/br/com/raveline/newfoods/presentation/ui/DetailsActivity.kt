@@ -1,6 +1,7 @@
 package br.com.raveline.newfoods.presentation.ui
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -24,6 +25,8 @@ class DetailsActivity : AppCompatActivity() {
 
     private lateinit var pagerAdapter: PagerAdapter
 
+    private lateinit var menuItem: MenuItem
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailsBinding.inflate(layoutInflater)
@@ -40,9 +43,19 @@ class DetailsActivity : AppCompatActivity() {
         initPagerAdapter()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_favorite_recipe, menu)
+        menuItem = menu?.findItem(R.id.save_favorite_menu_id)!!
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if (item.itemId == android.R.id.home) finish()
+        else if (item.itemId == R.id.save_favorite_menu_id) {
+            item.icon = ContextCompat.getDrawable(this, R.drawable.ic_full_saved)
+        }
 
         return super.onOptionsItemSelected(item)
     }

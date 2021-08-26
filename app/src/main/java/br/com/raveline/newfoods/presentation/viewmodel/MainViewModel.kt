@@ -7,12 +7,10 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.lifecycle.*
 import br.com.raveline.newfoods.R
+import br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity
 import br.com.raveline.newfoods.data.db.recipe.entity.RecipesEntity
 import br.com.raveline.newfoods.data.model.Recipes
-import br.com.raveline.newfoods.domain.usecases.GetFoodRecipesFromDatabaseUseCase
-import br.com.raveline.newfoods.domain.usecases.GetRecipesUseCase
-import br.com.raveline.newfoods.domain.usecases.GetSearchedUseCase
-import br.com.raveline.newfoods.domain.usecases.SaveRecipesDatabaseUseCase
+import br.com.raveline.newfoods.domain.usecases.*
 import br.com.raveline.newfoods.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +21,7 @@ class MainViewModel(
     private val saveRecipesDatabaseUseCase: SaveRecipesDatabaseUseCase,
     getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase,
     private val getSearchedUseCase: GetSearchedUseCase,
+    private val getFavoritesUseCase: GetFavoritesUseCase,
     private val app: Application
 ) : AndroidViewModel(app) {
 
@@ -33,10 +32,28 @@ class MainViewModel(
     val recipesLocalLiveData: LiveData<List<RecipesEntity>> =
         getFoodRecipesFromDatabaseUseCase.execute().asLiveData()
 
+    val favoritesLiveData: LiveData<List<FavoriteEntity>> =
+        getFavoritesUseCase.executeRead().asLiveData()
+
     private fun insertRecipes(recipesEntity: RecipesEntity) =
         viewModelScope.launch(Dispatchers.IO) {
             saveRecipesDatabaseUseCase.execute(recipesEntity)
         }
+
+    /*FAVORITES*/
+    private fun insertFavoriteRecipe(favoriteEntity: FavoriteEntity) =
+        viewModelScope.launch(Dispatchers.IO) {
+            getFavoritesUseCase.executeSave(favoriteEntity)
+        }
+
+    private fun deleteFavoriteRecipe(favoriteEntity: FavoriteEntity) =
+        viewModelScope.launch(Dispatchers.IO) {
+            getFavoritesUseCase.executeDeleteSingle(favoriteEntity)
+        }
+
+    private fun deleteAllFavoritesRecipes() = viewModelScope.launch(Dispatchers.IO) {
+        getFavoritesUseCase.executeDeleteAll()
+    }
 
     // FROM REMOTE NETWORKS
     fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
