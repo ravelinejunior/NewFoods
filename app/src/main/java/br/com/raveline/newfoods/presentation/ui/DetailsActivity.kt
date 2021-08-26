@@ -1,20 +1,27 @@
 package br.com.raveline.newfoods.presentation.ui
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navArgs
 import br.com.raveline.newfoods.R
+import br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity
 import br.com.raveline.newfoods.databinding.ActivityDetailsBinding
 import br.com.raveline.newfoods.presentation.ui.adapter.recipes.PagerAdapter
 import br.com.raveline.newfoods.presentation.ui.fragment.detail.IngredientsFragment
 import br.com.raveline.newfoods.presentation.ui.fragment.detail.InstructionsFragment
 import br.com.raveline.newfoods.presentation.ui.fragment.detail.OverviewFragment
+import br.com.raveline.newfoods.presentation.viewmodel.MainViewModel
+import br.com.raveline.newfoods.presentation.viewmodel.MainViewModelFactory
 import br.com.raveline.newfoods.utils.Constants.Companion.BUNDLE_RECIPE_KEY
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
@@ -27,10 +34,17 @@ class DetailsActivity : AppCompatActivity() {
 
     private lateinit var menuItem: MenuItem
 
+    private lateinit var mainViewModel: MainViewModel
+
+    @Inject
+    lateinit var mainViewModelFactory: MainViewModelFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        mainViewModel = ViewModelProvider(this, mainViewModelFactory).get(MainViewModel::class.java)
 
         setSupportActionBar(binding.toolbarDetailsId)
         binding.toolbarDetailsId.apply {
@@ -54,10 +68,29 @@ class DetailsActivity : AppCompatActivity() {
 
         if (item.itemId == android.R.id.home) finish()
         else if (item.itemId == R.id.save_favorite_menu_id) {
-            item.icon = ContextCompat.getDrawable(this, R.drawable.ic_full_saved)
+            saveToFavorites(item)
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun saveToFavorites(item: MenuItem) {
+        val favorite = FavoriteEntity(0, args.recipe)
+        mainViewModel.insertFavoriteRecipe(favorite)
+        changeMenuItemColor(item, ContextCompat.getDrawable(this, R.drawable.ic_full_saved)!!)
+        showSnackbar("Recipe Saved Successfully")
+
+    }
+
+    private fun changeMenuItemColor(item: MenuItem, icFullSaved: Drawable) {
+        item.icon = icFullSaved
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.detailsLayoutId, message, Snackbar.LENGTH_SHORT)
+            .setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
+            .setAction("Okay") {}
+            .show()
     }
 
     private fun initPagerAdapter() {

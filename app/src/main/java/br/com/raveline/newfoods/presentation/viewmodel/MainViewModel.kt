@@ -41,17 +41,17 @@ class MainViewModel(
         }
 
     /*FAVORITES*/
-    private fun insertFavoriteRecipe(favoriteEntity: FavoriteEntity) =
+     fun insertFavoriteRecipe(favoriteEntity: FavoriteEntity) =
         viewModelScope.launch(Dispatchers.IO) {
             getFavoritesUseCase.executeSave(favoriteEntity)
         }
 
-    private fun deleteFavoriteRecipe(favoriteEntity: FavoriteEntity) =
+     fun deleteFavoriteRecipe(favoriteEntity: FavoriteEntity) =
         viewModelScope.launch(Dispatchers.IO) {
             getFavoritesUseCase.executeDeleteSingle(favoriteEntity)
         }
 
-    private fun deleteAllFavoritesRecipes() = viewModelScope.launch(Dispatchers.IO) {
+     fun deleteAllFavoritesRecipes() = viewModelScope.launch(Dispatchers.IO) {
         getFavoritesUseCase.executeDeleteAll()
     }
 
