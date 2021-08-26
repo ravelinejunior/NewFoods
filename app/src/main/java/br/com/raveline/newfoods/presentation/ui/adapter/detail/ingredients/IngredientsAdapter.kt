@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.data.model.ExtendedIngredient
 import br.com.raveline.newfoods.databinding.ItemIngredientsRowBinding
 import br.com.raveline.newfoods.utils.Constants.Companion.BASE_IMAGE_URL
@@ -40,7 +41,10 @@ class IngredientsAdapter : RecyclerView.Adapter<IngredientsAdapter.MyViewHolder>
 
         fun bind(ingredient: ExtendedIngredient) {
             iBinding.apply {
-                imageViewItemIngredientsId.load(BASE_IMAGE_URL + ingredient.image)
+                imageViewItemIngredientsId.load(BASE_IMAGE_URL + ingredient.image){
+                    crossfade(400)
+                    error(R.drawable.no_image_loading)
+                }
                 titleTextViewItemIngredientsId.text = ingredient.name?.capitalize(Locale.ROOT)
                 amountTextViewItemIngredientsId.text = ingredient.amount.toString()
                 unitTextViewItemIngredientsId.text = ingredient.unit

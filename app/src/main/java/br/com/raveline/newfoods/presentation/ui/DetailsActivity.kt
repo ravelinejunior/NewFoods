@@ -13,7 +13,9 @@ import br.com.raveline.newfoods.presentation.ui.fragment.detail.IngredientsFragm
 import br.com.raveline.newfoods.presentation.ui.fragment.detail.InstructionsFragment
 import br.com.raveline.newfoods.presentation.ui.fragment.detail.OverviewFragment
 import br.com.raveline.newfoods.utils.Constants.Companion.BUNDLE_RECIPE_KEY
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailsBinding

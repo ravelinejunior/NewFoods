@@ -1,5 +1,6 @@
 package br.com.raveline.newfoods.presentation.di
 
+import br.com.raveline.newfoods.presentation.ui.adapter.detail.ingredients.IngredientsAdapter
 import br.com.raveline.newfoods.presentation.ui.adapter.recipes.RecipesAdapter
 import dagger.Module
 import dagger.Provides
@@ -16,5 +17,11 @@ class AdapterModule {
     @Singleton
     fun provideRecipesAdapter(): RecipesAdapter {
         return RecipesAdapter()
+    }
+
+    @Provides
+    @Singleton
+    fun provideIngredientsAdapter(): IngredientsAdapter {
+        return IngredientsAdapter()
     }
 }
