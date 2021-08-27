@@ -41,6 +41,8 @@ class FavoritesFragment : Fragment() {
         favoritesBinding = FragmentFavoritesBinding.inflate(inflater,container,false)
         favoritesBinding.lifecycleOwner = this
         favoritesBinding.mainViewModel = mainViewModel
+        favoritesBinding.fAdapter = favoriteRecipesAdapter
+
         setupRecycler()
         mainViewModel.favoritesLiveData.observe(viewLifecycleOwner,{ favorites ->
             favoriteRecipesAdapter.differ.submitList(favorites)

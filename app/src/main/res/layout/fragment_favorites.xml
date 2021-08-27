@@ -9,7 +9,9 @@
             name="mainViewModel"
             type="br.com.raveline.newfoods.presentation.viewmodel.MainViewModel" />
 
-
+        <variable
+            name="fAdapter"
+            type="br.com.raveline.newfoods.presentation.ui.adapter.favorites.FavoriteRecipesAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

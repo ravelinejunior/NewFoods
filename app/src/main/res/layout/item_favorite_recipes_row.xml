@@ -9,6 +9,8 @@
         <variable
             name="favoritesEntity"
             type="br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity" />
+
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,7 +95,8 @@
                     app:layout_constraintStart_toStartOf="@+id/description_favoritesRow_id"
                     app:layout_constraintTop_toBottomOf="@+id/description_favoritesRow_id"
                     app:layout_constraintVertical_bias="0.19999999"
-                    app:srcCompat="@drawable/favorite"
+                    app:tint="@color/red"
+                    app:srcCompat="@drawable/ic_sharp_heart_24"
                      />
 
                 <TextView
@@ -119,7 +122,8 @@
                     app:layout_constraintStart_toEndOf="@+id/qtdLike_favoritesRow_id"
                     app:layout_constraintTop_toTopOf="@+id/imageView2"
                     app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/cookbook"
+                    app:tint="@color/yellow"
+                    app:srcCompat="@drawable/ic_time_clock_full_black"
                      />
 
                 <TextView

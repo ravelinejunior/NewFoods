@@ -13,7 +13,7 @@ class FavoriteBindingAdapter {
 
         @BindingAdapter("viewVisibility", "setData", requireAll = false)
         @JvmStatic
-        fun setDAtaAndViewVisibility(
+        fun setDataAndViewVisibility(
             view: View,
             favoriteEntity: List<FavoriteEntity>?,
             mAdapter: FavoriteRecipesAdapter?
@@ -40,7 +40,7 @@ class FavoriteBindingAdapter {
                     }
                     is RecyclerView -> {
                         view.visibility = View.VISIBLE
-                        //mAdapter?.setData(favoriteEntity)
+                        mAdapter?.differ?.submitList(favoriteEntity)
                     }
                 }
             }
