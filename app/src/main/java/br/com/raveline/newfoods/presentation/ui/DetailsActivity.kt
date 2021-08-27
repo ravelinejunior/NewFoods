@@ -19,6 +19,7 @@ import br.com.raveline.newfoods.presentation.ui.fragment.detail.OverviewFragment
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModel
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModelFactory
 import br.com.raveline.newfoods.utils.Constants.Companion.BUNDLE_RECIPE_KEY
+import br.com.raveline.newfoods.utils.observeOnce
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -35,6 +36,9 @@ class DetailsActivity : AppCompatActivity() {
     private lateinit var menuItem: MenuItem
 
     private lateinit var mainViewModel: MainViewModel
+
+    private var recipeSaved = false
+    private var savedRecipeId = 0
 
     @Inject
     lateinit var mainViewModelFactory: MainViewModelFactory
@@ -59,16 +63,38 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_favorite_recipe, menu)
-        menuItem = menu?.findItem(R.id.save_favorite_menu_id)!!
-
+        menuItem = menu!!.findItem(R.id.save_favorite_menu_id)
+        checkSavedRecipes(menuItem)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun checkSavedRecipes(menuItem: MenuItem) {
+        /*Verificar pelo viewModel*/
+        mainViewModel.favoritesLiveData.observeOnce(this, { favorites ->
+            try {
+                for (recipeSaved in favorites)
+                    if (recipeSaved.recipe.id == args.recipe.id) {
+                        changeMenuItemColor(
+                            menuItem,
+                            ContextCompat.getDrawable(this, R.drawable.ic_full_saved)!!
+                        )
+
+                        savedRecipeId = recipeSaved.id
+                        this.recipeSaved = true
+                    }
+            } catch (e: Exception) {
+                showSnackbar(e.message.toString())
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if (item.itemId == android.R.id.home) finish()
-        else if (item.itemId == R.id.save_favorite_menu_id) {
+        else if (item.itemId == R.id.save_favorite_menu_id && !recipeSaved) {
             saveToFavorites(item)
+        }else if(item.itemId == R.id.save_favorite_menu_id && recipeSaved){
+            removeFromFavorites(item)
         }
 
         return super.onOptionsItemSelected(item)
@@ -79,8 +105,17 @@ class DetailsActivity : AppCompatActivity() {
         mainViewModel.insertFavoriteRecipe(favorite)
         changeMenuItemColor(item, ContextCompat.getDrawable(this, R.drawable.ic_full_saved)!!)
         showSnackbar("Recipe Saved Successfully")
-
+        recipeSaved = true
     }
+
+    private fun removeFromFavorites(item: MenuItem) {
+        val favoriteEntity = FavoriteEntity(savedRecipeId, args.recipe)
+        mainViewModel.deleteFavoriteRecipe(favoriteEntity)
+        changeMenuItemColor(item, ContextCompat.getDrawable(this, R.drawable.ic_save_favorite)!!)
+        showSnackbar("Recipe Delete Successfully")
+        recipeSaved = false
+    }
+
 
     private fun changeMenuItemColor(item: MenuItem, icFullSaved: Drawable) {
         item.icon = icFullSaved
@@ -113,5 +148,13 @@ class DetailsActivity : AppCompatActivity() {
             viewPagerDetailsId.adapter = pagerAdapter
             tabLayoutDetailsId.setupWithViewPager(viewPagerDetailsId)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        changeMenuItemColor(
+            menuItem,
+            ContextCompat.getDrawable(this, R.drawable.ic_save_favorite)!!
+        )
     }
 }
