@@ -1,15 +1,19 @@
 package br.com.raveline.newfoods.presentation.ui.adapter.favorites
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.*
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity
 import br.com.raveline.newfoods.databinding.ItemFavoriteRecipesRowBinding
+import br.com.raveline.newfoods.presentation.ui.fragment.favorites.FavoritesFragmentDirections
 import br.com.raveline.newfoods.utils.RecipesDiffUtil
 
-class FavoriteRecipesAdapter : RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>() {
+class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
+    RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>(), ActionMode.Callback {
 
     private val callback = object : DiffUtil.ItemCallback<FavoriteEntity>() {
         override fun areItemsTheSame(oldItem: FavoriteEntity, newItem: FavoriteEntity): Boolean {
@@ -50,6 +54,25 @@ class FavoriteRecipesAdapter : RecyclerView.Adapter<FavoriteRecipesAdapter.MyVie
         } else {
             holder.bind(favoriteList[position])
         }
+
+        /*CLICK LISTENERS*/
+        holder.itemView.apply {
+
+            /*SINGLE*/
+            val action =
+                FavoritesFragmentDirections.actionFavoritesFragmentIdToDetailsActivity(differ.currentList[position].recipe)
+            setOnClickListener {
+                findNavController().navigate(action)
+            }
+
+        }
+
+        holder.itemView.setOnLongClickListener {
+            /*LONG CLICK*/
+            requireActivity.startActionMode(this)
+            true
+
+        }
     }
 
     override fun getItemCount(): Int {
@@ -62,5 +85,22 @@ class FavoriteRecipesAdapter : RecyclerView.Adapter<FavoriteRecipesAdapter.MyVie
         val diffUtilResult = DiffUtil.calculateDiff(favoritesDiffUtil)
         favoriteList = favorites
         diffUtilResult.dispatchUpdatesTo(this)
+    }
+
+    override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+        mode?.menuInflater?.inflate(R.menu.menu_favorite_longclick, menu)
+        return true
+    }
+
+    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDestroyActionMode(mode: ActionMode?) {
+        TODO("Not yet implemented")
     }
 }

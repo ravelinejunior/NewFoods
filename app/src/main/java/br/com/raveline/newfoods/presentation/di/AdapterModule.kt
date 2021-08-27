@@ -1,5 +1,6 @@
 package br.com.raveline.newfoods.presentation.di
 
+import androidx.fragment.app.FragmentActivity
 import br.com.raveline.newfoods.presentation.ui.adapter.detail.ingredients.IngredientsAdapter
 import br.com.raveline.newfoods.presentation.ui.adapter.favorites.FavoriteRecipesAdapter
 import br.com.raveline.newfoods.presentation.ui.adapter.recipes.RecipesAdapter
@@ -28,7 +29,13 @@ class AdapterModule {
 
     @Provides
     @Singleton
-    fun provideFavoriteRecipe(): FavoriteRecipesAdapter {
-        return FavoriteRecipesAdapter()
+    fun provideRequiredFragment(): FragmentActivity {
+        return FragmentActivity()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteRecipe(requiredActivity: FragmentActivity): FavoriteRecipesAdapter {
+        return FavoriteRecipesAdapter(requiredActivity)
     }
 }

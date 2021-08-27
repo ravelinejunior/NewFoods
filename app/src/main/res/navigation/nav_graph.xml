@@ -25,7 +25,11 @@
         android:id="@+id/favoritesFragment_id"
         android:name="br.com.raveline.newfoods.presentation.ui.fragment.favorites.FavoritesFragment"
         android:label="Favorites Recipes"
-        tools:layout="@layout/fragment_favorites"/>
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_id_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+    </fragment>
     <fragment
         android:id="@+id/jokeFragment_id"
         android:name="br.com.raveline.newfoods.presentation.ui.fragment.jokes.JokeFragment"
