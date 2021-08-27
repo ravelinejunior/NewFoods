@@ -18,8 +18,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class FavoritesFragment : Fragment() {
 
-    @Inject
-    lateinit var favoriteRecipesAdapter: FavoriteRecipesAdapter
+   /* @Inject
+    lateinit var favoriteRecipesAdapter: FavoriteRecipesAdapter*/
+   private val favoriteRecipesAdapter: FavoriteRecipesAdapter by lazy { FavoriteRecipesAdapter(requireActivity()) }
 
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory

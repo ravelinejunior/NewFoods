@@ -71,7 +71,6 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
             /*LONG CLICK*/
             requireActivity.startActionMode(this)
             true
-
         }
     }
 
@@ -93,14 +92,14 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
     }
 
     override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun onDestroyActionMode(mode: ActionMode?) {
-        TODO("Not yet implemented")
+
     }
 }
