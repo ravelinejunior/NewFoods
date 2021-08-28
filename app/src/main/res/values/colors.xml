@@ -23,6 +23,7 @@
     <color name="purple">#6200EA</color>
     <color name="darkPurple">#5502C8</color>
     <color name="greenTab">#02AF92</color>
+    <color name="light_orange_alpha">#B2FFA000</color>
 
     <!-- Custom Chip Style -->
     <color name="checkedChipBackgroundColor">#4DB71C1C</color>
@@ -32,4 +33,7 @@
     <color name="dark_orange">#F83F05</color>
     <color name="orange">#F57C00</color>
     <color name="light_orange">#FFA000</color>
+
+
+
 </resources>

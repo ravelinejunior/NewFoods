@@ -9,8 +9,6 @@
         <variable
             name="favoritesEntity"
             type="br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity" />
-
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,20 +35,31 @@
                 android:layout_height="match_parent"
                 android:background="@color/white">
 
-                <ImageView
-                    android:id="@+id/image_favoritesRow_id"
-                    setImageRecipe="@{favoritesEntity.recipe.image}"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_image_favoritesRow_id"
                     android:layout_width="190dp"
                     android:layout_height="0dp"
-                    android:adjustViewBounds="true"
-                    android:cropToPadding="true"
-                    android:padding="0.5dp"
-                    android:scaleType="centerCrop"
+                    app:cardCornerRadius="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars"
-                    android:contentDescription="@string/app_name" />
+                    >
+                    <ImageView
+                        android:id="@+id/image_favoritesRow_id"
+                        setImageRecipe="@{favoritesEntity.recipe.image}"
+                        android:layout_width="190dp"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:cropToPadding="true"
+                        android:padding="0.5dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:srcCompat="@tools:sample/avatars"
+                        android:contentDescription="@string/app_name" />
+                </androidx.cardview.widget.CardView>
+
 
                 <TextView
                     android:id="@+id/title_favoritesRow_id"
@@ -69,8 +78,8 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/image_favoritesRow_id"
-                    app:layout_constraintTop_toTopOf="@+id/image_favoritesRow_id" />
+                    app:layout_constraintStart_toEndOf="@+id/card_image_favoritesRow_id"
+                    app:layout_constraintTop_toTopOf="@+id/card_image_favoritesRow_id" />
 
                 <TextView
                     android:id="@+id/description_favoritesRow_id"
@@ -91,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_favoritesRow_id"
+                    app:layout_constraintBottom_toBottomOf="@+id/card_image_favoritesRow_id"
                     app:layout_constraintStart_toStartOf="@+id/description_favoritesRow_id"
                     app:layout_constraintTop_toBottomOf="@+id/description_favoritesRow_id"
                     app:layout_constraintVertical_bias="0.19999999"
