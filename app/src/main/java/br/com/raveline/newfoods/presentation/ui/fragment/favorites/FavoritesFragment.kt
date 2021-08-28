@@ -31,7 +31,7 @@ class FavoritesFragment : Fragment() {
     lateinit var viewModelFactory: MainViewModelFactory
 
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var favoritesBinding: FragmentFavoritesBinding
+    private var favoritesBinding: FragmentFavoritesBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,20 +45,20 @@ class FavoritesFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         favoritesBinding = FragmentFavoritesBinding.inflate(inflater, container, false)
-        favoritesBinding.lifecycleOwner = this
-        favoritesBinding.mainViewModel = mainViewModel
-        favoritesBinding.fAdapter = favoriteRecipesAdapter
+        favoritesBinding!!.lifecycleOwner = this
+        favoritesBinding!!.mainViewModel = mainViewModel
+        favoritesBinding!!.fAdapter = favoriteRecipesAdapter
 
         setupRecycler()
         mainViewModel.favoritesLiveData.observe(viewLifecycleOwner, { favorites ->
             favoriteRecipesAdapter.differ.submitList(favorites)
         })
 
-        return favoritesBinding.root
+        return favoritesBinding!!.root
     }
 
     private fun setupRecycler() {
-        favoritesBinding.recyclerViewFavoriteId.apply {
+        favoritesBinding!!.recyclerViewFavoriteId.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             adapter = favoriteRecipesAdapter
@@ -106,6 +106,12 @@ class FavoritesFragment : Fragment() {
         val dialog = alert.create()
         dialog.show()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        favoritesBinding = null
+        favoriteRecipesAdapter.clearContextualActionMode()
     }
 
 }

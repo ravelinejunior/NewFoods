@@ -4,7 +4,6 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -146,11 +145,11 @@ class FavoriteRecipesAdapter(
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         if (item?.itemId == R.id.delete_favoriteRecipe_menu_id) {
-            displayDeleteSelections(selectedFavorites,0)
+            displayDeleteSelections(selectedFavorites, 0)
         } else if (item?.itemId == R.id.selectAllRecipes_favoriteRecipe_menu_id) {
             selectedFavorites.clear()
             mainViewModel.favoritesLiveData.value?.let { selectedFavorites.addAll(it) }
-            displayDeleteSelections(selectedFavorites,1)
+            displayDeleteSelections(selectedFavorites, 1)
         }
         return true
     }
@@ -162,13 +161,14 @@ class FavoriteRecipesAdapter(
 
         /*PERCORRER CADA HOLDER E REMOVER ESTILIZAÇÃO*/
         myViewHolders.forEach { holder ->
-            changeRecipeStyle(holder, R.color.white, R.color.lightMediumGray, 0, 0)
+            changeRecipeStyle(holder, R.color.white, R.color.lightMediumGray, 0)
         }
     }
 
-    private fun displayDeleteSelections(favorites: List<FavoriteEntity>,flagClearAll:Int) {
+    private fun displayDeleteSelections(favorites: List<FavoriteEntity>, flagClearAll: Int) {
         val alert = AlertDialog.Builder(requireActivity)
-            .setTitle("Delete the current selection of ${favorites.size} items?")
+            .setTitle("Delete the ${favorites.size} items selected?")
+            .setCancelable(false)
             .setIcon(
                 ContextCompat.getDrawable(
                     requireActivity.applicationContext,
@@ -180,7 +180,7 @@ class FavoriteRecipesAdapter(
             ) { dialog, _ ->
                 dialog?.dismiss()
 
-                if(flagClearAll == 1){
+                if (flagClearAll == 1) {
                     mActionMode.finish()
                     applyBarColor(R.color.dark)
                     multiSelected = false
@@ -214,11 +214,11 @@ class FavoriteRecipesAdapter(
         /*VERIFICAR SE RECEITA ESTÁ SELECIONADA OU NÃO*/
         if (selectedFavorites.contains(currentRecipe)) {
             selectedFavorites.remove(currentRecipe)
-            changeRecipeStyle(holder!!, R.color.white, R.color.lightMediumGray, 0, 0)
+            changeRecipeStyle(holder!!, R.color.white, R.color.lightMediumGray, 0)
             applyActionModeTitle()
         } else {
             selectedFavorites.add(currentRecipe)
-            changeRecipeStyle(holder!!, R.color.light_orange_alpha, R.color.dark_orange, 4, 10)
+            changeRecipeStyle(holder!!, R.color.light_orange_alpha, R.color.dark_orange, 8)
             applyActionModeTitle()
         }
     }
@@ -227,8 +227,8 @@ class FavoriteRecipesAdapter(
         holder: MyViewHolder,
         backgroundColor: Int,
         strokeColor: Int,
-        strokeWidth: Int,
-        padding: Int
+        strokeWidth: Int
+
     ) {
         holder.itemView.materialCard_favoriteRow_layout_id.setBackgroundColor(
             ContextCompat.getColor(
@@ -237,7 +237,6 @@ class FavoriteRecipesAdapter(
             )
         )
 
-        holder.itemView.card_image_favoritesRow_id.setPadding(padding)
 
         holder.itemView.materialCard_favoriteRow_layout_id.strokeColor =
             ContextCompat.getColor(requireActivity, strokeColor)
@@ -248,6 +247,12 @@ class FavoriteRecipesAdapter(
 
     private fun applyBarColor(color: Int) {
         requireActivity.window.statusBarColor = ContextCompat.getColor(requireActivity, color)
+    }
+
+    fun clearContextualActionMode() {
+        if (this::mActionMode.isInitialized) {
+            mActionMode.finish()
+        }
     }
 
 }

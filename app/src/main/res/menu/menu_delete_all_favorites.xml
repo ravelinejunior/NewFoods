@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/deleteAll_favoriteRecipe_menu_id"
-        android:title="@string/delete_favorite_recipe"
+        android:title="@string/delete_fav"
         android:icon="@drawable/ic_baseline_delete_24"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         />
 </menu>
