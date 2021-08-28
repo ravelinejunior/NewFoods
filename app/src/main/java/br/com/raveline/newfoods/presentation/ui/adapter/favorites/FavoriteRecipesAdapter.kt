@@ -1,6 +1,7 @@
 package br.com.raveline.newfoods.presentation.ui.adapter.favorites
 
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -88,6 +89,7 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
 
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         mode?.menuInflater?.inflate(R.menu.menu_favorite_longclick, menu)
+        applyBarColor(R.color.dark_orange)
         return true
     }
 
@@ -100,6 +102,11 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
     }
 
     override fun onDestroyActionMode(mode: ActionMode?) {
-
+        applyBarColor(R.color.dark)
     }
+
+    private fun applyBarColor(color:Int){
+        requireActivity.window.statusBarColor = ContextCompat.getColor(requireActivity,color)
+    }
+
 }
