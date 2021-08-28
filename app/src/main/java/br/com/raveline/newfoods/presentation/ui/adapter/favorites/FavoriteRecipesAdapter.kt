@@ -36,6 +36,8 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
 
     private var myViewHolders = arrayListOf<MyViewHolder>()
 
+    private lateinit var mActionMode: ActionMode
+
     inner class MyViewHolder(private val binding: ItemFavoriteRecipesRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -96,8 +98,6 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
                 applySelection(holder, currentRecipe)
                 true
             }
-
-
         }
     }
 
@@ -113,9 +113,24 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
         diffUtilResult.dispatchUpdatesTo(this)
     }
 
+    private fun applyActionModeTitle() {
+        when (selectedFavorites.size) {
+            0 -> {
+                mActionMode.finish()
+            }
+            1 -> {
+                mActionMode.title = "1 ITEM SELECTED"
+            }
+            else -> {
+                mActionMode.title = "${selectedFavorites.size} ITEMS SELECTED"
+            }
+        }
+    }
+
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         mode?.menuInflater?.inflate(R.menu.menu_favorite_longclick, menu)
         applyBarColor(R.color.dark_orange)
+        mActionMode = mode!!
         return true
     }
 
@@ -143,9 +158,11 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
         if (selectedFavorites.contains(currentRecipe)) {
             selectedFavorites.remove(currentRecipe)
             changeRecipeStyle(holder, R.color.white, R.color.lightMediumGray, 0, 0)
+            applyActionModeTitle()
         } else {
             selectedFavorites.add(currentRecipe)
             changeRecipeStyle(holder, R.color.light_orange_alpha, R.color.dark_orange, 4, 10)
+            applyActionModeTitle()
         }
     }
 
