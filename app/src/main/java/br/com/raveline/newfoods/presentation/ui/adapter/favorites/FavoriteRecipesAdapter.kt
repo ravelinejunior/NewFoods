@@ -1,6 +1,8 @@
 package br.com.raveline.newfoods.presentation.ui.adapter.favorites
 
 import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.fragment.app.FragmentActivity
@@ -12,10 +14,14 @@ import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity
 import br.com.raveline.newfoods.databinding.ItemFavoriteRecipesRowBinding
 import br.com.raveline.newfoods.presentation.ui.fragment.favorites.FavoritesFragmentDirections
+import br.com.raveline.newfoods.presentation.viewmodel.MainViewModel
 import br.com.raveline.newfoods.utils.RecipesDiffUtil
 import kotlinx.android.synthetic.main.item_favorite_recipes_row.view.*
 
-class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
+class FavoriteRecipesAdapter(
+    private val requireActivity: FragmentActivity,
+    private val mainViewModel: MainViewModel
+) :
     RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>(), ActionMode.Callback {
 
     private val callback = object : DiffUtil.ItemCallback<FavoriteEntity>() {
@@ -139,6 +145,13 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
     }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.delete_favoriteRecipe_menu_id) {
+            displayDeleteSelections(selectedFavorites,0)
+        } else if (item?.itemId == R.id.selectAllRecipes_favoriteRecipe_menu_id) {
+            selectedFavorites.clear()
+            mainViewModel.favoritesLiveData.value?.let { selectedFavorites.addAll(it) }
+            displayDeleteSelections(selectedFavorites,1)
+        }
         return true
     }
 
@@ -153,15 +166,59 @@ class FavoriteRecipesAdapter(private val requireActivity: FragmentActivity) :
         }
     }
 
-    private fun applySelection(holder: MyViewHolder, currentRecipe: FavoriteEntity) {
+    private fun displayDeleteSelections(favorites: List<FavoriteEntity>,flagClearAll:Int) {
+        val alert = AlertDialog.Builder(requireActivity)
+            .setTitle("Delete the current selection of ${favorites.size} items?")
+            .setIcon(
+                ContextCompat.getDrawable(
+                    requireActivity.applicationContext,
+                    R.drawable.ic_baseline_delete_24
+                )
+            )
+            .setNegativeButton(
+                "Cancel"
+            ) { dialog, _ ->
+                dialog?.dismiss()
+
+                if(flagClearAll == 1){
+                    mActionMode.finish()
+                    applyBarColor(R.color.dark)
+                    multiSelected = false
+                    selectedFavorites.clear()
+                }
+            }
+
+            .setPositiveButton("Confirm") { dialog, _ ->
+                selectedFavorites.forEach {
+                    mainViewModel.deleteFavoriteRecipe(it)
+                }
+                dialog.dismiss()
+
+                multiSelected = false
+                Toast.makeText(
+                    requireActivity.applicationContext,
+                    "${selectedFavorites.size} Items Deleted Successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+                selectedFavorites.clear()
+                mActionMode.finish()
+
+            }
+
+        val dialog = alert.create()
+        dialog.show()
+
+    }
+
+    private fun applySelection(holder: MyViewHolder?, currentRecipe: FavoriteEntity) {
         /*VERIFICAR SE RECEITA ESTÁ SELECIONADA OU NÃO*/
         if (selectedFavorites.contains(currentRecipe)) {
             selectedFavorites.remove(currentRecipe)
-            changeRecipeStyle(holder, R.color.white, R.color.lightMediumGray, 0, 0)
+            changeRecipeStyle(holder!!, R.color.white, R.color.lightMediumGray, 0, 0)
             applyActionModeTitle()
         } else {
             selectedFavorites.add(currentRecipe)
-            changeRecipeStyle(holder, R.color.light_orange_alpha, R.color.dark_orange, 4, 10)
+            changeRecipeStyle(holder!!, R.color.light_orange_alpha, R.color.dark_orange, 4, 10)
             applyActionModeTitle()
         }
     }

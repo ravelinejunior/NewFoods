@@ -33,9 +33,4 @@ class AdapterModule {
         return FragmentActivity()
     }
 
-    @Provides
-    @Singleton
-    fun provideFavoriteRecipe( requiredActivity: FragmentActivity): FavoriteRecipesAdapter {
-        return FavoriteRecipesAdapter(requiredActivity)
-    }
 }
