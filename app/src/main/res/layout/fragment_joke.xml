@@ -20,6 +20,8 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/foodJoke_CardView_fragment_id"
+            readApiResponseJoke="@{mainViewModel.foodJokeLiveData}"
+            readDatabaseJoke="@{mainViewModel.foodLocalJokeLiveData}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -61,6 +63,7 @@
         <ProgressBar
             android:id="@+id/progressBar_foodJoke_fragment_id"
             style="?android:attr/progressBarStyle"
+            readApiResponseJoke="@{mainViewModel.foodJokeLiveData}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
@@ -71,6 +74,8 @@
 
         <ImageView
             android:id="@+id/imageView_foodJoke_fragment_id"
+            responseJokeAdapter="@{mainViewModel.foodJokeLiveData}"
+            databaseJokeAdapter="@{mainViewModel.foodLocalJokeLiveData}"
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:alpha="0.5"
@@ -85,6 +90,8 @@
 
         <TextView
             android:id="@+id/error_textView_foodJoke_fragment_id"
+            responseJokeAdapter="@{mainViewModel.foodJokeLiveData}"
+            databaseJokeAdapter="@{mainViewModel.foodLocalJokeLiveData}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

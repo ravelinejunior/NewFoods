@@ -72,7 +72,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
             recipesViewModel.backOnline = it
         })
 
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenStarted {
 
             networkListeners.checkNetworkAvailability(recipesBinding?.root!!.context)
                 .collect { status ->
@@ -128,7 +128,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         //VERIFICA SE EXISTE DADOS NO BANCO PRIMEIRO ANTES DE ENVIAR A REQUISIÇÃO
 
         lifecycleScope.launch {
-            mainViewModel.recipesLocalLiveData.observeOnce(viewLifecycleOwner, { recipesDatabase ->
+            mainViewModel.recipesLocalLiveData.observe(viewLifecycleOwner, { recipesDatabase ->
                 try {
                     if (recipesDatabase.isNotEmpty() && !args.backFromBottomSheet) {
                         recipesAdapter.setRecipeData(recipesDatabase[0].recipes)

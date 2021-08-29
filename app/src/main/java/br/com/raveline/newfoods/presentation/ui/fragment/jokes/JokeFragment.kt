@@ -1,13 +1,12 @@
 package br.com.raveline.newfoods.presentation.ui.fragment.jokes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import br.com.raveline.newfoods.databinding.FragmentJokeBinding
@@ -17,6 +16,7 @@ import br.com.raveline.newfoods.utils.Constants.Companion.API_KEYA
 import br.com.raveline.newfoods.utils.Resource
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,11 +27,11 @@ class JokeFragment : Fragment() {
     @Inject
     lateinit var mainViewModelFactory: MainViewModelFactory
 
-    private lateinit var mainViewModel:MainViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel = ViewModelProvider(this,mainViewModelFactory).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, mainViewModelFactory).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -55,17 +55,14 @@ class JokeFragment : Fragment() {
         mainViewModel.foodJokeLiveData.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {
-                    binding?.progressBarFoodJokeFragmentId?.visibility = GONE
                     binding?.foodJokeTextViewFragmentId?.text = response.data?.text
                 }
                 is Resource.Error -> {
                     loadDataFromCache()
-                    binding?.progressBarFoodJokeFragmentId?.visibility = GONE
                     showSnackBar(response.message.toString())
                 }
-                is Resource.Loading -> {
-                    binding?.progressBarFoodJokeFragmentId?.visibility = VISIBLE
-                }
+
+                else -> Log.d(JokeFragment::class.java.canonicalName, "Loading: ")
             }
         })
     }
@@ -78,10 +75,9 @@ class JokeFragment : Fragment() {
     }
 
     private fun loadDataFromCache() {
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             mainViewModel.foodLocalJokeLiveData.observe(viewLifecycleOwner, { database ->
                 if (database != null) {
-                    binding?.progressBarFoodJokeFragmentId?.visibility = GONE
                     binding!!.foodJokeTextViewFragmentId.text = database.foodJoke.text
                 }
             })
