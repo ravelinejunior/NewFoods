@@ -1,7 +1,6 @@
 package br.com.raveline.newfoods.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import br.com.raveline.newfoods.data.model.Recipe
 
 class RecipesDiffUtil<T>(
     private val oldList: List<T>,

@@ -1,6 +1,7 @@
 package br.com.raveline.newfoods.presentation.di
 
 import br.com.raveline.newfoods.data.db.favorite.dao.FavoriteDao
+import br.com.raveline.newfoods.data.db.joke.dao.FoodJokeDao
 import br.com.raveline.newfoods.data.db.recipe.dao.RecipesDao
 import br.com.raveline.newfoods.data.repository.datasource.RecipesLocalDataSource
 import br.com.raveline.newfoods.data.repository.datasource_impl.RecipesLocalDataSourceImpl
@@ -18,8 +19,9 @@ class LocalDataSourceModule {
     @Singleton
     fun provideLocalDataSource(
         recipesDao: RecipesDao,
-        favoriteDao: FavoriteDao
+        favoriteDao: FavoriteDao,
+        foodJokeDao: FoodJokeDao
     ): RecipesLocalDataSource {
-        return RecipesLocalDataSourceImpl(recipesDao, favoriteDao)
+        return RecipesLocalDataSourceImpl(recipesDao, favoriteDao, foodJokeDao)
     }
 }

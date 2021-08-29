@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import br.com.raveline.newfoods.data.model.Recipe
-import br.com.raveline.newfoods.data.model.Recipes
+import br.com.raveline.newfoods.data.model.recipe.Recipe
+import br.com.raveline.newfoods.data.model.recipe.Recipes
 import br.com.raveline.newfoods.databinding.ItemRecipesRowBinding
 import br.com.raveline.newfoods.utils.RecipesDiffUtil
 

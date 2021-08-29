@@ -41,4 +41,10 @@ class UseCaseModule {
     fun provideGetFavoritesUseCase(foodRepository: FoodRepository): GetFavoritesUseCase {
         return GetFavoritesUseCase(foodRepository)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetFoodJokeRepository(foodRepository: FoodRepository): GetFoodJokeUseCase {
+        return GetFoodJokeUseCase(foodRepository)
+    }
 }

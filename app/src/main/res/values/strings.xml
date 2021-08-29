@@ -61,4 +61,5 @@
     <string name="share">Share</string>
     <string name="select_all_favorites">Select All Recipes</string>
     <string name="delete_fav">Delete All Recipes</string>
+    <string name="food_joke">Food Joke</string>
 </resources>

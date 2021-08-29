@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import br.com.raveline.newfoods.data.db.RecipesDatabase
 import br.com.raveline.newfoods.data.db.favorite.dao.FavoriteDao
+import br.com.raveline.newfoods.data.db.joke.dao.FoodJokeDao
 import br.com.raveline.newfoods.data.db.recipe.dao.RecipesDao
 import br.com.raveline.newfoods.utils.Constants.Companion.RECIPES_DATABASE_NAME
 import dagger.Module
@@ -33,6 +34,12 @@ class DatabaseModule {
     @Singleton
     fun provideFavoritesDao(recipesDatabase: RecipesDatabase): FavoriteDao {
         return recipesDatabase.favoritesDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFoodJokeDao(recipesDatabase: RecipesDatabase): FoodJokeDao {
+        return recipesDatabase.foodJokeDao()
     }
 
 }

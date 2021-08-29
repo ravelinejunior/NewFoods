@@ -1,8 +1,10 @@
 package br.com.raveline.newfoods.data.repository
 
 import br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity
+import br.com.raveline.newfoods.data.db.joke.entity.FoodJokeEntity
 import br.com.raveline.newfoods.data.db.recipe.entity.RecipesEntity
-import br.com.raveline.newfoods.data.model.Recipes
+import br.com.raveline.newfoods.data.model.joke.FoodJoke
+import br.com.raveline.newfoods.data.model.recipe.Recipes
 import br.com.raveline.newfoods.data.repository.datasource.FoodRemoteRecipesDataSource
 import br.com.raveline.newfoods.data.repository.datasource.RecipesLocalDataSource
 import br.com.raveline.newfoods.domain.factory.FoodRepository
@@ -44,5 +46,17 @@ class FoodRemoteRepositoryDataSourceImpl(
 
     override suspend fun deleteAllFavoritesRecipes() {
         localDataSource.deleteAllFavoritesRecipes()
+    }
+
+    override suspend fun getFoodJoke(apiKey: String): Response<FoodJoke> {
+        return foodRemoteRecipesDataSource.getFoodJoke(apiKey)
+    }
+
+    override suspend fun insertFoodJoke(foodJokeEntity: FoodJokeEntity) {
+        localDataSource.insertFoodJoke(foodJokeEntity)
+    }
+
+    override fun readFoodJoke(): Flow<FoodJokeEntity> {
+        return localDataSource.readFoodJoke()
     }
 }

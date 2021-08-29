@@ -2,7 +2,6 @@ package br.com.raveline.newfoods.data.db.favorite.dao
 
 import androidx.room.*
 import br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity
-import br.com.raveline.newfoods.data.model.Recipe
 import kotlinx.coroutines.flow.Flow
 
 @Dao

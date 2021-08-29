@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import br.com.raveline.newfoods.R
-import br.com.raveline.newfoods.data.model.ExtendedIngredient
+import br.com.raveline.newfoods.data.model.recipe.ExtendedIngredient
 import br.com.raveline.newfoods.databinding.ItemIngredientsRowBinding
 import br.com.raveline.newfoods.utils.Constants.Companion.BASE_IMAGE_URL
 import br.com.raveline.newfoods.utils.RecipesDiffUtil

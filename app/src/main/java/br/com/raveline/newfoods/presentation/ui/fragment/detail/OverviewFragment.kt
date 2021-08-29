@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import br.com.raveline.newfoods.R
-import br.com.raveline.newfoods.data.model.Recipe
+import br.com.raveline.newfoods.data.model.recipe.Recipe
 import br.com.raveline.newfoods.databinding.FragmentOverviewBinding
 import br.com.raveline.newfoods.utils.Constants.Companion.BUNDLE_RECIPE_KEY
 import coil.load

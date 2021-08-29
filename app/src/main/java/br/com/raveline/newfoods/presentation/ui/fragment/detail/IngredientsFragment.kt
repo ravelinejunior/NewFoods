@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.raveline.newfoods.data.model.Recipe
+import br.com.raveline.newfoods.data.model.recipe.Recipe
 import br.com.raveline.newfoods.databinding.FragmentIngredientsBinding
 import br.com.raveline.newfoods.presentation.ui.adapter.detail.ingredients.IngredientsAdapter
 import br.com.raveline.newfoods.utils.Constants

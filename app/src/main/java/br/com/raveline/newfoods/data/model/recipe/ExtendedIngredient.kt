@@ -1,4 +1,4 @@
-package br.com.raveline.newfoods.data.model
+package br.com.raveline.newfoods.data.model.recipe
 
 
 import android.os.Parcelable

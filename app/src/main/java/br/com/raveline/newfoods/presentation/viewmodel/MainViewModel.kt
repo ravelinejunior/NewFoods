@@ -8,8 +8,10 @@ import android.os.Build
 import androidx.lifecycle.*
 import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity
+import br.com.raveline.newfoods.data.db.joke.entity.FoodJokeEntity
 import br.com.raveline.newfoods.data.db.recipe.entity.RecipesEntity
-import br.com.raveline.newfoods.data.model.Recipes
+import br.com.raveline.newfoods.data.model.joke.FoodJoke
+import br.com.raveline.newfoods.data.model.recipe.Recipes
 import br.com.raveline.newfoods.domain.usecases.*
 import br.com.raveline.newfoods.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -22,11 +24,13 @@ class MainViewModel(
     getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase,
     private val getSearchedUseCase: GetSearchedUseCase,
     private val getFavoritesUseCase: GetFavoritesUseCase,
+    private val getFoodJokeUseCase: GetFoodJokeUseCase,
     private val app: Application
 ) : AndroidViewModel(app) {
 
     var recipesLiveData: MutableLiveData<Resource<Recipes>> = MutableLiveData()
     var searchedRecipesLiveData: MutableLiveData<Resource<Recipes>> = MutableLiveData()
+    var foodJokeLiveData: MutableLiveData<Resource<FoodJoke>> = MutableLiveData()
 
     //Room Database
     val recipesLocalLiveData: LiveData<List<RecipesEntity>> =
@@ -35,24 +39,56 @@ class MainViewModel(
     val favoritesLiveData: LiveData<List<FavoriteEntity>> =
         getFavoritesUseCase.executeRead().asLiveData()
 
+    val foodLocalJokeLiveData: LiveData<FoodJokeEntity> =
+        getFoodJokeUseCase.executeReadFoodEntity().asLiveData()
+
     private fun insertRecipes(recipesEntity: RecipesEntity) =
         viewModelScope.launch(Dispatchers.IO) {
             saveRecipesDatabaseUseCase.execute(recipesEntity)
         }
 
     /*FAVORITES*/
-     fun insertFavoriteRecipe(favoriteEntity: FavoriteEntity) =
+    fun insertFavoriteRecipe(favoriteEntity: FavoriteEntity) =
         viewModelScope.launch(Dispatchers.IO) {
             getFavoritesUseCase.executeSave(favoriteEntity)
         }
 
-     fun deleteFavoriteRecipe(favoriteEntity: FavoriteEntity) =
+    fun deleteFavoriteRecipe(favoriteEntity: FavoriteEntity) =
         viewModelScope.launch(Dispatchers.IO) {
             getFavoritesUseCase.executeDeleteSingle(favoriteEntity)
         }
 
-     fun deleteAllFavoritesRecipes() = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteAllFavoritesRecipes() = viewModelScope.launch(Dispatchers.IO) {
         getFavoritesUseCase.executeDeleteAll()
+    }
+
+    /*FOOD JOKE*/
+    fun getFoodJoke(apiKey: String) = viewModelScope.launch(Dispatchers.IO) {
+        getFoodJokeSafeCall(apiKey)
+    }
+
+    fun insertFoodJoke(foodJokeEntity: FoodJokeEntity) = viewModelScope.launch(Dispatchers.IO) {
+        getFoodJokeUseCase.executeInsertFoodEntity(foodJokeEntity)
+    }
+
+    private suspend fun getFoodJokeSafeCall(apiKey: String) {
+        foodJokeLiveData.postValue(Resource.Loading())
+
+        if (isNetworkAvailable(app)) {
+            try {
+                val response = getFoodJokeUseCase.execute(apiKey)
+                foodJokeLiveData.postValue(handleFoodJokeResponse(response))
+
+                val foodJoke = foodJokeLiveData.value?.data
+                if (foodJoke != null) {
+                    offlineCacheFoodJoke(foodJoke)
+                }
+            } catch (e: Exception) {
+                foodJokeLiveData.postValue(Resource.Error(e.localizedMessage))
+            }
+        } else {
+            foodJokeLiveData.postValue(Resource.Error("No Internet Connection"))
+        }
     }
 
     // FROM REMOTE NETWORKS
@@ -89,7 +125,7 @@ class MainViewModel(
                 //saving into database
                 val foodRecipe = recipesLiveData.value!!.data
                 if (foodRecipe != null) {
-                    getRecipesFromDatabase(foodRecipe)
+                    offlineCacheRecipe(foodRecipe)
                 }
 
             } catch (e: Exception) {
@@ -100,11 +136,14 @@ class MainViewModel(
         }
     }
 
+    private fun offlineCacheFoodJoke(foodJoke: FoodJoke) {
+        val foodJokeEntity = FoodJokeEntity(foodJoke)
+        insertFoodJoke(foodJokeEntity)
+    }
 
-    private fun getRecipesFromDatabase(foodRecipe: Recipes) {
+    private fun offlineCacheRecipe(foodRecipe: Recipes) {
         //create a entity
         val recipesEntity = RecipesEntity(foodRecipe)
-
         insertRecipes(recipesEntity)
     }
 
@@ -121,6 +160,27 @@ class MainViewModel(
 
             response.body()!!.recipes.isNullOrEmpty() -> {
                 return Resource.Error("Recipes not found!")
+            }
+
+            response.isSuccessful -> {
+                val foodRecipes = response.body()
+                return Resource.Success(foodRecipes!!)
+            }
+
+            else -> {
+                return Resource.Error("General Error.")
+            }
+        }
+    }
+
+    private fun handleFoodJokeResponse(response: Response<FoodJoke>): Resource<FoodJoke> {
+        when {
+            response.message().toString().contains("timeout") -> {
+                return Resource.Error("Timeout")
+            }
+
+            response.code() == 402 -> {
+                return Resource.Error("API Key Limited!")
             }
 
             response.isSuccessful -> {

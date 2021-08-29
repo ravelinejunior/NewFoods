@@ -1,8 +1,8 @@
 package br.com.raveline.newfoods.utils
 
 import androidx.room.TypeConverter
-import br.com.raveline.newfoods.data.model.Recipe
-import br.com.raveline.newfoods.data.model.Recipes
+import br.com.raveline.newfoods.data.model.recipe.Recipe
+import br.com.raveline.newfoods.data.model.recipe.Recipes
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

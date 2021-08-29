@@ -7,7 +7,7 @@
 
         <variable
             name="recipe"
-            type="br.com.raveline.newfoods.data.model.Recipe" />
+            type="br.com.raveline.newfoods.data.model.recipe.Recipe" />
 
     </data>
 

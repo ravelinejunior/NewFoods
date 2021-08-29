@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import br.com.raveline.newfoods.data.db.recipe.entity.RecipesEntity
-import br.com.raveline.newfoods.data.model.Recipes
+import br.com.raveline.newfoods.data.model.recipe.Recipes
 import br.com.raveline.newfoods.utils.Resource
 
 class RecipesBindingAdapter {

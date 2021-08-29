@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import br.com.raveline.newfoods.R
-import br.com.raveline.newfoods.data.model.Recipe
+import br.com.raveline.newfoods.data.model.recipe.Recipe
 import br.com.raveline.newfoods.presentation.ui.fragment.recipes.RecipesFragmentDirections
 import coil.load
 import org.jsoup.Jsoup

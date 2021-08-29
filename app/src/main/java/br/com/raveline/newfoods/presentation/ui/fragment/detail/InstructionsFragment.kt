@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import br.com.raveline.newfoods.data.model.Recipe
+import br.com.raveline.newfoods.data.model.recipe.Recipe
 import br.com.raveline.newfoods.databinding.FragmentInstructionsBinding
 import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModel
 import br.com.raveline.newfoods.presentation.viewmodel.RecipesViewModelFactory

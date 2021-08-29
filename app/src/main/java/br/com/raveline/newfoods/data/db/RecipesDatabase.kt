@@ -5,12 +5,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import br.com.raveline.newfoods.data.db.favorite.dao.FavoriteDao
 import br.com.raveline.newfoods.data.db.favorite.entity.FavoriteEntity
+import br.com.raveline.newfoods.data.db.joke.dao.FoodJokeDao
+import br.com.raveline.newfoods.data.db.joke.entity.FoodJokeEntity
 import br.com.raveline.newfoods.data.db.recipe.dao.RecipesDao
 import br.com.raveline.newfoods.data.db.recipe.entity.RecipesEntity
 import br.com.raveline.newfoods.utils.RecipesTypeConverter
 
 @Database(
-    entities = [RecipesEntity::class,FavoriteEntity::class],
+    entities = [RecipesEntity::class,FavoriteEntity::class,FoodJokeEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -18,4 +20,5 @@ import br.com.raveline.newfoods.utils.RecipesTypeConverter
 abstract class RecipesDatabase : RoomDatabase() {
     abstract fun recipesDao(): RecipesDao
     abstract fun favoritesDao():FavoriteDao
+    abstract fun foodJokeDao():FoodJokeDao
 }

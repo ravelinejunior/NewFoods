@@ -11,6 +11,7 @@ class MainViewModelFactory(
     private val getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase,
     private val getSearchedUseCase: GetSearchedUseCase,
     private val getFavoritesUseCase: GetFavoritesUseCase,
+    private val getFoodJokeUseCase: GetFoodJokeUseCase,
     private val application: Application,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -20,6 +21,7 @@ class MainViewModelFactory(
             getFoodRecipesFromDatabaseUseCase,
             getSearchedUseCase,
             getFavoritesUseCase,
+            getFoodJokeUseCase,
             application
         ) as T
     }

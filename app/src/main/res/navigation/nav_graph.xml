@@ -51,6 +51,6 @@
         tools:layout="@layout/activity_details" >
         <argument
             android:name="recipe"
-            app:argType="br.com.raveline.newfoods.data.model.Recipe" />
+            app:argType="br.com.raveline.newfoods.data.model.recipe.Recipe" />
     </activity>
 </navigation>

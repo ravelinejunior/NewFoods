@@ -24,6 +24,7 @@ class ViewModelFactoryModule {
         getFoodRecipesFromDatabaseUseCase: GetFoodRecipesFromDatabaseUseCase,
         getSearchedUseCase: GetSearchedUseCase,
         getFavoritesUseCase: GetFavoritesUseCase,
+        getFoodJokeUseCase: GetFoodJokeUseCase,
         application: Application
     ): MainViewModelFactory {
         return MainViewModelFactory(
@@ -32,6 +33,7 @@ class ViewModelFactoryModule {
             getFoodRecipesFromDatabaseUseCase,
             getSearchedUseCase,
             getFavoritesUseCase,
+            getFoodJokeUseCase,
             application
         )
     }
