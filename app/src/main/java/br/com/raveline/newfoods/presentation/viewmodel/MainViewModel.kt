@@ -77,7 +77,6 @@ class MainViewModel(
         if (isNetworkAvailable(app)) {
             try {
                 val response = getFoodJokeUseCase.execute(apiKey)
-                //foodJokeLiveData.postValue(handleFoodJokeResponse(response))
 
                 foodJokeLiveData.value = handleFoodJokeResponse(response)
 

@@ -26,15 +26,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_NewFoods)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         setContentView(binding.root)
-        //mainViewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // navController = findNavController(R.id.nav_graph)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.recipesFragment_id,
