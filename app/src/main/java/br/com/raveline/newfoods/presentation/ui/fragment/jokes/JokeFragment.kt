@@ -1,14 +1,14 @@
 package br.com.raveline.newfoods.presentation.ui.fragment.jokes
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.GONE
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import br.com.raveline.newfoods.R
 import br.com.raveline.newfoods.databinding.FragmentJokeBinding
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModel
 import br.com.raveline.newfoods.presentation.viewmodel.MainViewModelFactory
@@ -29,9 +29,12 @@ class JokeFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
 
+    private var foodJoke = "No Food Joke"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(this, mainViewModelFactory).get(MainViewModel::class.java)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -56,6 +59,7 @@ class JokeFragment : Fragment() {
             when (response) {
                 is Resource.Success -> {
                     binding?.foodJokeTextViewFragmentId?.text = response.data?.text
+                    foodJoke = response.data!!.text
                 }
                 is Resource.Error -> {
                     loadDataFromCache()
@@ -79,6 +83,7 @@ class JokeFragment : Fragment() {
             mainViewModel.foodLocalJokeLiveData.observe(viewLifecycleOwner, { database ->
                 if (database != null) {
                     binding!!.foodJokeTextViewFragmentId.text = database.foodJoke.text
+                    foodJoke = database.foodJoke.text
                 }
             })
         }
@@ -87,6 +92,23 @@ class JokeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.share_foodjoke_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.share_foodJoke_menu_id){
+            val shareIntent = Intent().apply {
+                this.action = Intent.ACTION_SEND
+                this.putExtra(Intent.EXTRA_TEXT,foodJoke)
+                this.type = "text/plain"
+            }
+            startActivity(shareIntent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

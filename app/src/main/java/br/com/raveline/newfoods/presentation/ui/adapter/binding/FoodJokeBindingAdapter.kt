@@ -68,7 +68,7 @@ class FoodJokeBindingAdapter {
             apiResponse: Resource<FoodJoke>?,
             database: FoodJokeEntity?
         ) {
-            if (database?.foodJoke == null) {
+            if (database == null) {
                 view.visibility = VISIBLE
                 if (view is TextView) {
                     if (apiResponse != null) {

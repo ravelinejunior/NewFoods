@@ -63,11 +63,11 @@ class MainViewModel(
     }
 
     /*FOOD JOKE*/
-    fun getFoodJoke(apiKey: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun getFoodJoke(apiKey: String) = viewModelScope.launch(Dispatchers.Main) {
         getFoodJokeSafeCall(apiKey)
     }
 
-    fun insertFoodJoke(foodJokeEntity: FoodJokeEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun insertFoodJoke(foodJokeEntity: FoodJokeEntity) = viewModelScope.launch {
         getFoodJokeUseCase.executeInsertFoodEntity(foodJokeEntity)
     }
 
@@ -77,7 +77,9 @@ class MainViewModel(
         if (isNetworkAvailable(app)) {
             try {
                 val response = getFoodJokeUseCase.execute(apiKey)
-                foodJokeLiveData.postValue(handleFoodJokeResponse(response))
+                //foodJokeLiveData.postValue(handleFoodJokeResponse(response))
+
+                foodJokeLiveData.value = handleFoodJokeResponse(response)
 
                 val foodJoke = foodJokeLiveData.value?.data
                 if (foodJoke != null) {
