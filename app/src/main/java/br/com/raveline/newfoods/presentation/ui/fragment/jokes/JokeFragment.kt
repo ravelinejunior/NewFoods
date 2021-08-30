@@ -63,7 +63,7 @@ class JokeFragment : Fragment() {
                 }
                 is Resource.Error -> {
                     loadDataFromCache()
-                    showSnackBar(response.message.toString())
+                    //showSnackBar(response.message.toString())
                 }
 
                 else -> Log.d(JokeFragment::class.java.canonicalName, "Loading: ")
