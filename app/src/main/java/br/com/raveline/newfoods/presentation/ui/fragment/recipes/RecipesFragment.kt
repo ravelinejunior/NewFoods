@@ -80,11 +80,6 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                     recipesViewModel.isConnected = status
                     view?.let { recipesViewModel.showNetworkStatus(it) }
 
-                    recipesBinding!!.floatingActionButton.animation =
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            android.R.anim.fade_in
-                        )
                     //leitura de dados para exibição
                     getData()
 
@@ -127,7 +122,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun getData() {
         //VERIFICA SE EXISTE DADOS NO BANCO PRIMEIRO ANTES DE ENVIAR A REQUISIÇÃO
 
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             mainViewModel.recipesLocalLiveData.observe(viewLifecycleOwner, { recipesDatabase ->
                 try {
                     if (recipesDatabase.isNotEmpty() && !args.backFromBottomSheet) {
@@ -151,12 +146,12 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun requestApiData() {
         mainViewModel.getRecipes(recipesViewModel.applyQueries())
 
-        mainViewModel.recipesLiveData.observe(viewLifecycleOwner, { response ->
+        mainViewModel.recipesLiveData.observeOnce(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {
                     hideShimmer()
                     response.data.let { recipe ->
-                        recipesAdapter.differ.submitList(recipe!!.recipes)
+                        recipesAdapter.setRecipeData(recipe!!)
                     }
                 }
 
@@ -182,9 +177,8 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
             when (response) {
                 is Resource.Success -> {
                     hideShimmer()
-                    val foodRecipe = response
-                    foodRecipe.let {
-                        recipesAdapter.differ.submitList(it.data?.recipes)
+                    response.let {
+                        recipesAdapter.setRecipeData(it.data!!)
                     }
                 }
 
@@ -204,7 +198,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun loadDataFromCache() {
         lifecycleScope.launch {
-            mainViewModel.recipesLocalLiveData.observe(viewLifecycleOwner, { database ->
+            mainViewModel.recipesLocalLiveData.observeOnce(viewLifecycleOwner, { database ->
                 if (database.isNotEmpty()) {
                     recipesAdapter.setRecipeData(database[0].recipes)
                 }

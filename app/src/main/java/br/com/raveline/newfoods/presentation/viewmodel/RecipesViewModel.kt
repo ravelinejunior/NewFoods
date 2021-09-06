@@ -55,7 +55,7 @@ class RecipesViewModel @Inject constructor(
         }
 
         queries[Constants.QUERY_NUMBER] = Constants.DEFAULT_RECIPES_NUMBER
-        queries[Constants.QUERY_API_KEY] = Constants.API_KEY
+        queries[Constants.QUERY_API_KEY] = Constants.API_KEYA
         queries[Constants.QUERY_TYPE] = mealType
         queries[Constants.QUERY_DIET] = dietType
         queries[Constants.QUERY_ADD_RECIPE_INFORMATION] = "true"
@@ -70,7 +70,7 @@ class RecipesViewModel @Inject constructor(
 
         queries[QUERY_SEARCH] = query
         queries[Constants.QUERY_NUMBER] = Constants.DEFAULT_RECIPES_NUMBER
-        queries[Constants.QUERY_API_KEY] = Constants.API_KEY
+        queries[Constants.QUERY_API_KEY] = Constants.API_KEYA
         queries[Constants.QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[Constants.QUERY_FILL_INGREDIENTS] = "true"
 
